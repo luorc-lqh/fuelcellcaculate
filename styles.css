@@ -1,0 +1,1324 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 动态性能页面样式 */
+.paste-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.paste-header {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 8px 0;
+    border-bottom: 2px solid #3498db;
+}
+
+.header-cell {
+    flex: 1;
+    font-weight: bold;
+    color: #2c3e50;
+    text-align: center;
+}
+
+#dataPasteArea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: monospace;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.process-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.process-button:hover {
+    background-color: #2980b9;
+}
+
+.visualization-section {
+    margin-top: 25px;
+}
+
+.chart-container {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#performanceChart {
+    max-width: 100%;
+    height: 400px;
+}
+
+.slider-container {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.data-slider {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: #ddd;
+    outline: none;
+}
+
+.slider-value {
+    min-width: 120px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f5f7fa;
+    color: #2c3e50;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 12px 0;
+    background-color: #2c3e50;
+    color: white;
+}
+
+header h1 {
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 600;
+    padding-left: 20px; /* 标题向右移动，与左边框保留间隙 */
+}
+
+.instructions-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.download-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+    margin-right: 20px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.instructions-button:hover, .download-button:hover {
+    background-color: #2980b9;
+}
+
+/* 版本更新日志按钮样式 */
+.version-log-button {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.version-log-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* 版本更新日志内容样式 */
+.version-log-content {
+    margin-top: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.version-entry {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.version-entry:last-child {
+    border-bottom: none;
+}
+
+.version-entry h3 {
+    color: #3498db;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.version-entry ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.version-entry li {
+    margin-bottom: 6px;
+    line-height: 1.5;
+    color: #555;
+}
+
+/* 滚动条样式 */
+.version-log-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.version-log-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.version-log-content::-webkit-scrollbar-thumb {
+    background: #bdc3c7;
+    border-radius: 4px;
+}
+
+.version-log-content::-webkit-scrollbar-thumb:hover {
+    background: #95a5a6;
+}
+
+/* 标签页样式 */
+.tabs {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.tab-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #ecf0f1;
+    border-bottom: 1px solid #bdc3c7;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+}
+
+.tab-button:hover {
+    background-color: #d5dbdb;
+    color: #34495e;
+}
+
+.tab-button.active {
+    background-color: white;
+    color: #3498db;
+    border-bottom: 2px solid #3498db;
+    font-weight: 500;
+}
+
+.tab-content {
+    display: none;
+    padding: 15px;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 区域样式 */
+.section {
+    margin-bottom: 20px;
+}
+
+.art-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+}
+
+.art-text {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    font-family: 'Courier New', monospace;
+}
+
+canvas {
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.section h2 {
+    margin-bottom: 12px;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+/* 输入字段样式 */
+.input-grid {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* 混合动力系统计算页面的5行6列布局 */
+#hybrid-system .input-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(5, auto);
+    gap: 10px;
+    margin-bottom: 15px;
+    grid-auto-flow: column;
+}
+
+#hybrid-system .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+#hybrid-system .input-group label {
+    font-size: 0.9rem;
+    color: #2c3e50;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#hybrid-system .input-group input {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+#hybrid-system .input-group input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.input-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 响应式设计 - 小屏幕设备 */
+@media (max-width: 1200px) {
+    .input-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .input-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .input-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 400px) {
+    .input-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 320px) {
+    .input-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.input-group input {
+    padding: 5px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.input-group.highlight input {
+    background-color: #e8f4fd;
+}
+
+.input-group.highlight-green input {
+    background-color: #e8f8f5;
+}
+
+/* 导入导出按钮 */
+.import-export {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.import-export-button {
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.import-export-button:hover {
+    background-color: #7f8c8d;
+}
+
+/* 页脚样式 */
+footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px 0;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    white-space: nowrap;
+}
+
+.footer-content a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.footer-content a:hover {
+    text-decoration: underline;
+}
+
+/* 登录按钮样式 */
+.login-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+    margin-right: 20px; /* 登录按钮向左移动，与右边框保留间隙 */
+}
+
+.login-button:hover {
+    background-color: #2980b9;
+}
+
+/* 登录模态框样式 */
+.login-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 800px;
+    max-width: 90%;
+    position: relative;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+/* 模态框网格布局 */
+.modal-grid {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* 模态框列布局 */
+.modal-column {
+    flex: 1;
+    min-width: 250px;
+}
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* 登录按钮样式 */
+#loginForm button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+#loginForm button[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* 注册按钮样式 */
+#registerButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+#registerButton:hover {
+    background-color: #229954;
+}
+
+/* 结果容器样式 */
+/* 默认结果容器样式（适用于其他页面） */
+.results-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.result-section {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    height: fit-content;
+}
+
+.result-section h3 {
+    color: #2c3e50;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* COG加湿器部分上移样式 */
+.result-section h3 + .result-item, 
+.result-section h3[style*="COG加湿器"] + .result-item {
+    margin-top: -8px; /* 调整上移距离，增大移动量 */
+}
+
+/* 混合动力系统计算页面特殊样式 */
+#hybrid-system .results-container {
+    display: block;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+#hybrid-system .result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 15px;
+}
+
+#hybrid-system .result-section {
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#hybrid-system .result-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+#hybrid-system .result-item span:first-child {
+    flex: none;
+    margin-right: 0;
+    white-space: nowrap;
+}
+
+#hybrid-system .result-item span:last-child {
+    flex: none;
+    margin-left: 0;
+    text-align: left !important;
+    color: #000000;
+}
+
+/* 第一组：第一行第一列，5个结果 */
+#hybrid-system .result-grid .result-section:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+/* 第二组：第二行第一列，4个结果 */
+#hybrid-system .result-grid .result-section:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+/* 第三组：第一行第二列，5个结果 */
+#hybrid-system .result-grid .result-section:nth-child(3) {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+/* 第四组：第一行第三列，1个结果 */
+#hybrid-system .result-grid .result-section:nth-child(4) {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-item span:first-child {
+    color: #555;
+}
+
+.result-item span:last-child {
+    font-weight: 500;
+    color: #000000;
+}
+
+/* 公式区域样式 */
+.formula-section {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.formula-section h3 {
+    color: #2c3e50;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.formula-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #2c3e50;
+}
+
+.formula-explanation {
+    font-size: 0.8rem;
+    color: #555;
+    margin-top: 8px;
+}
+
+.formula-explanation p {
+    margin-bottom: 3px;
+}
+
+/* 说明区域和注释 */
+.explanation-section,
+.note {
+    background-color: #f1f8ff;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border-left: 4px solid #3498db;
+}
+
+.explanation-section h3 {
+    color: #2c3e50;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.explanation-section p {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.reaction-formula {
+    font-family: 'Courier New', monospace;
+    background-color: white;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 8px 0;
+}
+
+.note {
+    font-size: 0.8rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* 氢气值表格 */
+.hydrogen-value-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-row {
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.table-cell {
+    flex: 1;
+    padding: 8px;
+    font-size: 0.85rem;
+}
+
+.table-cell:first-child {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}
+
+/* 介质选择 */
+.medium-selection {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+.medium-selection label {
+    font-weight: 500;
+}
+
+.medium-selection select {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: white;
+}
+
+#selectedDensity {
+    font-size: 0.9rem;
+    color: #555;
+    font-style: italic;
+}
+
+/* 双列输入布局 */
+#heat-exchanger .input-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 15px;
+}
+
+/* 参考文献样式 */
+.reference {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #f0f7fb;
+    border-radius: 6px;
+    border: 1px solid #d4e6f1;
+}
+
+.reference h4 {
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 0;
+}
+
+.reference-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.reference-list li {
+    color: #34495e;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin-bottom: 4px;
+}
+
+#heat-exchanger .input-container {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+#heat-exchanger .input-container::after {
+    content: '';
+    position: absolute;
+    left: 52.7%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ccc;
+}
+
+#heat-exchanger .input-column {
+    width: 48%;
+}
+
+#heat-exchanger .input-column:first-child {
+    padding-right: 15px;
+}
+
+#heat-exchanger .input-column:last-child {
+    padding-left: 15px;
+}
+
+#heat-exchanger .results-container {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+#heat-exchanger .result-section:last-child {
+    position: relative;
+    left: -21.5%;
+    width: 25%;
+    min-width: unset;
+    max-width: unset;
+    resize: none;
+}
+
+#heat-exchanger .input-column {
+    width: 48%;
+}
+
+#heat-exchanger .results-container {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+#heat-exchanger .result-section {
+    width: 25%;
+    min-width: unset;
+    max-width: unset;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    resize: none;
+    overflow: auto;
+}
+
+#heat-exchanger .result-section p {
+    margin: 0;
+    white-space: nowrap;
+    text-align: left !important;
+}
+
+/* 换热器/中冷器页恢复原始输入框行距 */
+#heat-exchanger .input-group {
+    gap: 3px;
+}
+
+#heat-exchanger .input-group input {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+}
+
+.result-item span:first-child {
+    white-space: nowrap;
+    margin-right: 0;
+}
+
+.result-item span:last-child {
+    margin-left: 0;
+    text-align: left !important;
+    color: #000000;
+}
+
+.input-column h3 {
+    margin-bottom: 12px;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+/* 小工具样式 */
+.tool-input {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.tool-input h2 {
+    margin-bottom: 12px;
+}
+
+#sumInput {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.tool-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.tool-button:hover {
+    background-color: #2980b9;
+}
+
+.tool-result {
+    margin-top: 15px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.flow-velocity-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.tool-results {
+    margin-top: 12px;
+    display: flex;
+    gap: 15px;
+}
+
+/* 管路压损计算样式 */
+#pipeline-pressure .input-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+#pipeline-pressure .input-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+#pipeline-pressure .input-column h3 {
+    margin-bottom: 12px;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 4px;
+}
+
+/* 四列布局样式 */
+.pipeline-four-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.pipeline-column {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.pipeline-column h3 {
+    margin-bottom: 12px;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 4px;
+    font-size: 15px;
+}
+
+.pipeline-column .input-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pipeline-column .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pipeline-column .input-group label {
+    font-weight: 500;
+    color: #495057;
+    font-size: 13px;
+}
+
+.pipeline-column .input-group input {
+    padding: 5px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.pipeline-column .result-section {
+    margin-top: 0;
+}
+
+.pipeline-column .result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 13px;
+}
+
+.pipeline-column .result-item:last-child {
+    border-bottom: none;
+}
+
+.pipeline-column .result-item span:first-child {
+    color: #495057;
+    margin-right: 10px;
+}
+
+.pipeline-column .result-item span:last-child {
+    color: #000000;
+    font-weight: 500;
+    text-align: right;
+}
+
+/* 响应式设计 */
+@media (max-width: 1400px) {
+    .pipeline-four-column {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .pipeline-four-column {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .pipeline-column {
+        padding: 10px;
+    }
+}
+
+/* 对话框样式 */
+.dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.dialog-content {
+    background-color: white;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+}
+
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.dialog-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #7f8c8d;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+/* 信息按钮样式 */
+.info-button {
+    background-color: #e0f7fa;
+    color: #006064;
+    border: 1px solid #80deea;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+    top: -7px;
+}
+
+.info-button:hover {
+    background-color: #80deea;
+    transform: scale(1.1);
+}
+    transition: all 0.3s ease;
+}
+
+.close-button:hover {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+.dialog-body {
+    padding: 15px;
+}
+
+.dialog-body p {
+    margin-bottom: 8px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.dialog-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .tab-buttons {
+        overflow-x: auto;
+    }
+    
+    .tab-button {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .input-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .results-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .input-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .art-text {
+        font-size: 2rem;
+    }
+    
+    .canvas {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .tool-results {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .art-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .medium-selection {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .import-export {
+        flex-direction: column;
+    }
+    
+    .import-export-button {
+        width: 100%;
+    }
+}
