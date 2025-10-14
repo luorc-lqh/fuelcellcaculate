@@ -572,10 +572,19 @@ function calculateAirThermal() {
     const intercoolerPressureLoss = parseFloat(document.getElementById('intercoolerPressureLoss').value) || 0;
     
     // 计算高度相关参数
-    const pressureAtHeight = 101325 * Math.pow(1 - 2.25577e-5 * altitude, 5.25588); // 在高度h上的压力(Pa)
-    const temperatureKAtHeight = 288.15 - 0.0065 * altitude; // 在高度h上的温度(K)
-    const temperatureCAtHeight = temperatureKAtHeight - 273.15; // 在高度h上的温度(℃)
-    const densityAtHeight = pressureAtHeight / (airGasConstant * temperatureKAtHeight); // 在高度h上的密度(kg/m3)
+    let pressureAtHeight, temperatureKAtHeight, temperatureCAtHeight, densityAtHeight;
+    
+    if (altitude > 11000) {
+        pressureAtHeight = 22631.8 * Math.exp((11000 - altitude) / 6340); // 在高度h上的压力(Pa) - 高空
+        temperatureKAtHeight = 216.65; // 在高度h上的温度(K) - 高空
+        densityAtHeight = 0.3639 * Math.exp((11000 - altitude) / 6340); // 在高度h上的密度(kg/m3) - 高空
+    } else {
+        pressureAtHeight = 101325 * Math.pow(1 - altitude / 44330, 5.25588); // 在高度h上的压力(Pa) - 低空
+        temperatureKAtHeight = 288.15 - 0.0065 * altitude; // 在高度h上的温度(K) - 低空
+        densityAtHeight = 1.225 * Math.pow(1 - altitude / 44330, 4.25588); // 在高度h上的密度(kg/m3) - 低空
+    }
+    
+    temperatureCAtHeight = temperatureKAtHeight - 273.15; // 在高度h上的温度(℃)
     
     // 计算空气流量
     const airInletVolumeFlow = actualAirFlow * 0.022414 * (temperatureKAtHeight / 273.15) * (101325 / pressureAtHeight); // 空气入口体积流量(m^3/s)

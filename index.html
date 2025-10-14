@@ -181,10 +181,10 @@
                     
                     <div class="result-section">
                         <h3>氢气子系统</h3>
-                        <div class="result-item" title="系统消耗氢气量(mol/s) = 实际入口H2流量(mol/s)"><span>系统消耗氢气量(mol/s)：</span><span id="systemHydrogenConsumption"></span></div>
-                        <div class="result-item" title="系统供氢量(NLPM) = 实际入口H2流量(NLPM)"><span>系统供氢量(NLPM)：</span><span id="systemHydrogenSupplyNLPM"></span></div>
-                        <div class="result-item" title="氢气尾气排气(NLPM) = (实际入口H2流量 - 理论反应消耗氢气量) * 22.4 * 60"><span>氢气尾气排气(NLPM)：</span><span id="hydrogenExhaust"></span></div>
-                        <div class="result-item" title="出口氢气循环量(mol/s) = (实际入口H2流量 - 理论反应消耗氢气量)"><span>出口氢气循环量(mol/s)：</span><span id="hydrogenRecirculation"></span></div>
+                        <div class="result-item" title="系统消耗氢气量(mol/s) = 理论反应消耗氢气量 * 100 / 氢气利用率"><span>系统消耗氢气量(mol/s)：</span><span id="systemHydrogenConsumption"></span></div>
+                        <div class="result-item" title="系统供氢量(NLPM) = 系统消耗氢气量 * 22.4 * 60"><span>系统供氢量(NLPM)：</span><span id="systemHydrogenSupplyNLPM"></span></div>
+                        <div class="result-item" title="氢气尾气排气(NLPM) = 系统供氢量 * (1 - 氢气利用率/100)"><span>氢气尾气排气(NLPM)：</span><span id="hydrogenExhaust"></span></div>
+                        <div class="result-item" title="出口氢气循环量(mol/s) = 理论反应消耗氢气量 * (氢气过量比 - 1)"><span>出口氢气循环量(mol/s)：</span><span id="hydrogenRecirculation"></span></div>
                         <div class="result-item" title="出口氢气循环量(NLPM) = 出口氢气循环量(mol/s) * 22.4 * 60"><span>出口氢气循环量(NLPM)：</span><span id="hydrogenRecirculationNLPM"></span></div>
                         <div class="result-item" title="阳极出口总水量(mol/s) = 理论反应消耗氢气量 * 水分布系数 + 进入电堆水量"><span>阳极出口总水量(mol/s)：</span><span id="anodeOutletWater"></span></div>
                         <div class="result-item" title="阳极出口温度(℃) = 操作温度"><span>阳极出口温度(℃)：</span><span id="anodeOutletTemp"></span></div>
@@ -321,9 +321,9 @@
                 <div class="results-container">
                     <div class="result-section">
                         <h3>空气热力计算结果</h3>
-                        <div class="result-item" title="在高度h上的压力(Pa) = 101325 * (1 - 2.25577e-5 * altitude)^5.25588"><span>在高度h上的压力(Pa)：</span><span id="pressureAtHeight"></span></div>
-                        <div class="result-item" title="在高度h上的密度(kg/m3) = pressureAtHeight / (airGasConstant * temperatureKAtHeight)"><span>在高度h上的密度(kg/m3)：</span><span id="densityAtHeight"></span></div>
-                        <div class="result-item" title="在高度h上的温度(K) = 288.15 - 0.0065 * altitude"><span>在高度h上的温度(K)：</span><span id="temperatureKAtHeight"></span></div>
+                        <div class="result-item" title="在高度h上的压力(Pa) = 当altitude>11000m时，22631.8*exp((11000-altitude)/6340)；否则，101325*(1-altitude/44330)^5.25588"><span>在高度h上的压力(Pa)：</span><span id="pressureAtHeight"></span></div>
+                        <div class="result-item" title="在高度h上的密度(kg/m3) = 当altitude>11000m时，0.3639*exp((11000-altitude)/6340)；否则，1.225*(1-altitude/44330)^4.25588"><span>在高度h上的密度(kg/m3)：</span><span id="densityAtHeight"></span></div>
+                        <div class="result-item" title="在高度h上的温度(K) = 当altitude>11000m时，216.65；否则，288.15-0.0065*altitude"><span>在高度h上的温度(K)：</span><span id="temperatureKAtHeight"></span></div>
                         <div class="result-item" title="在高度h上的温度(℃) = temperatureKAtHeight - 273.15"><span>在高度h上的温度(℃)：</span><span id="temperatureCAtHeight"></span></div>
                         <div class="result-item" title="空气入口体积流量(m^3/s) = airFlowRate / 1000 / 60"><span>空气入口体积流量(m^3/s)：</span><span id="airInletVolumeFlow"></span></div>
                         <div class="result-item" title="空气入口质量流量(g/s) = airInletVolumeFlow * densityAtHeight * 1000"><span>空气入口质量流量(g/s)：</span><span id="airInletMassFlow"></span></div>
@@ -333,7 +333,7 @@
                         <div class="result-item" title="出口空气温度(℃) = outletAirTempK - 273.15"><span>出口空气温度(℃)：</span><span id="outletAirTempC"></span></div>
                         <div class="result-item" title="空气温升(K) = outletAirTempK - inletAirTemperature"><span>空气温升(K)：</span><span id="airTempRise"></span></div>
                         <div class="result-item" title="定熵压缩轴功(W) = k/(k-1)*p1*V1*[1-(p2/p1)^((k-1)/k)]"><span>定熵压缩轴功(W)：</span><span id="isentropicCompressionWork"></span></div>
-                        <div class="result-item" title="空压机功耗(W) = isentropicCompressionWork / compressorEfficiency"><span>空压机功耗(W)：</span><span id="compressorPowerConsumption"></span></div>
+                        <div class="result-item" title="空压机功耗(W) = 空气入口质量流量 × 空气定压比热 × 空气温升"><span>空压机功耗(W)：</span><span id="compressorPowerConsumption"></span></div>
                     </div>
                     
                     <div class="formula-section">

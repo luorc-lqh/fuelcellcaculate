@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (registerButton) {
         registerButton.addEventListener('click', function() {
             // 获取表单元素
-            const usernameInput = document.getElementById('username');
+            const usernameInput = document.getElementById('username'); 
             const passwordInput = document.getElementById('password');
             const username = usernameInput.value;
             const password = passwordInput.value;
