@@ -542,7 +542,7 @@ footer {
     flex: 1;
     min-width: 250px;
 }
-}
+/* 此处多余的右大括号，已移除，不添加新内容 */
 
 .close-button {
     position: absolute;
@@ -739,6 +739,43 @@ footer {
     color: #2c3e50;
 }
 
+.formula-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.formula-table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 15px 10px;
+    min-height: 60px;
+}
+
+/* 优化MathJax公式显示 */
+.formula-table .MathJax {
+    font-size: 110% !important;
+}
+
+.formula-text {
+    text-align: center;
+}
+
+.formula-table th, .formula-table td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.formula-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.formula-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
 .formula-explanation {
     font-size: 0.8rem;
     color: #555;
@@ -756,7 +793,6 @@ footer {
     padding: 12px;
     border-radius: 6px;
     margin-top: 15px;
-    border-left: 4px solid #3498db;
 }
 
 .explanation-section h3 {
@@ -884,15 +920,7 @@ footer {
     position: relative;
 }
 
-#heat-exchanger .input-container::after {
-    content: '';
-    position: absolute;
-    left: 52.7%;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background-color: #ccc;
-}
+/* 移除了垂直线伪元素 */
 
 #heat-exchanger .input-column {
     width: 48%;
@@ -1170,8 +1198,8 @@ footer {
 .dialog-content {
     background-color: white;
     border-radius: 8px;
-    max-width: 600px;
-    width: 90%;
+    max-width: 95%;
+    width: auto;
     max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
@@ -1230,7 +1258,8 @@ footer {
     transform: scale(1.1);
 }
     transition: all 0.3s ease;
-}
+/* 此选择为空，推测为多余代码，已移除 */
+/* 此处多余的右大括号，已移除 */
 
 .close-button:hover {
     background-color: #ecf0f1;

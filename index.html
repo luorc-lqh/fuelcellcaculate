@@ -7,6 +7,24 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='36' height='36' viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23000000' d='M18 8c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10c0-3.03-1.99-5.68-4.71-7.59l1.66-1.66C24.53 10.79 26 13.17 26 16c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z'/%3E%3Cpath fill='%23000000' d='M18 24l-5-4.5 1-4.5 4 4.5 4-4.5 1 4.5-5 4.5zM12 15l4 3.5v4l-4-3.5z'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: ['base', 'ams']
+            },
+            svg: {
+                fontCache: 'global'
+            },
+            chtml: {
+                scale: 1.05,
+                displayAlign: 'center'
+            }
+        };
+    </script>
 </head>
 <body>
     <div class="container">
@@ -132,7 +150,7 @@
                             </div>
                             <div class="input-group highlight">
                                 <label for="anodeInletTemp">阳极入温度(℃):</label>
-                                <input type="number" id="anodeInletTemp" value="81" step="1">
+                                <input type="number" id="anodeInletTemp" value="45" step="1">
                             </div>
                             <div class="input-group highlight">
                                 <label for="gasSeparatorEfficiency">气分效率(%):</label>
@@ -344,11 +362,11 @@
                     </div>
                     
                     <div class="formula-section">
-                        <h3>计算公式</h3>
+                        <h3>温升、定熵压缩轴功、功耗计算公式</h3>
                         <div class="formula-text">
-                            <p>T2=T1(1+((P2/P1)^0.286-1)/η)</p>
-                            <p>Pws=κ/(κ-1)*p1*V1*[1-(p2/p1)^((κ-1)/κ)]</p>
-                            <p>Ppump=Qm*Cp*(T2-T1)</p>
+                            <p>$$T2=T1\left(1+\frac{\left(\left(\frac{P2}{P1}\right)^{0.286}-1\right)}{\eta}\right)$$</p>
+                            <p>$$Pws=\frac{\kappa}{\kappa-1}\cdot p1\cdot V1\cdot\left[1-\left(\frac{p2}{p1}\right)^{\frac{\kappa-1}{\kappa}}\right]$$</p>
+                            <p>$$Ppump=Qm\cdot Cp\cdot(T2-T1)$$</p>
                         </div>
                     </div>
                 </div>
@@ -435,29 +453,29 @@
                             <label for="fluidTemperature">温度(℃):</label>
                             <input type="number" id="fluidTemperature" value="20" step="1">
                         </div>
-                        
-                        <div class="medium-selection">
-                            <label for="mediumType">选择介质:</label>
-                            <select id="mediumType">
-                                <option value="0.0899">氢气</option>
-                                <option value="1.225" selected>空气</option>
-                                <option value="1.165">氮气</option>
-                                <option value="1000">水</option>
-                                <option value="1.172">乙烯</option>
-                                <option value="0.717">甲烷</option>
-                                <option value="1.429">氧气</option>
-                                <option value="1.977">二氧化碳</option>
-                                <option value="0.1786">氦气</option>
-                                <option value="0.876">苯</option>
-                                <option value="0.789">乙醇</option>
-                                <option value="3.21">氯气</option>
-                                <option value="5.51">氟利昂</option>
-                                <option value="0.771">氨气</option>
-                                <option value="1.489">氯仿</option>
-                                <option value="0.598">蒸汽（100℃）</option>
-                            </select>
-                            <span id="selectedDensity">选择介质的密度为: 1.225</span>
-                        </div>
+                    </div>
+                    <!-- 第二行：介质选择和密度 -->
+                    <div class="medium-selection">
+                        <label for="mediumType">选择介质:</label>
+                        <select id="mediumType">
+                            <option value="0.0899">氢气</option>
+                            <option value="1.225" selected>空气</option>
+                            <option value="1.165">氮气</option>
+                            <option value="1000">水</option>
+                            <option value="1.172">乙烯</option>
+                            <option value="0.717">甲烷</option>
+                            <option value="1.429">氧气</option>
+                            <option value="1.977">二氧化碳</option>
+                            <option value="0.1786">氦气</option>
+                            <option value="0.876">苯</option>
+                            <option value="0.789">乙醇</option>
+                            <option value="3.21">氯气</option>
+                            <option value="5.51">氟利昂</option>
+                            <option value="0.771">氨气</option>
+                            <option value="1.489">氯仿</option>
+                            <option value="0.598">蒸汽（100℃）</option>
+                        </select>
+                        <span id="selectedDensity">选择介质的密度为: 1.225 kg/m³</span>
                     </div>
                 </div>
                 
@@ -471,9 +489,27 @@
                     <div class="formula-section">
                         <h3>计算公式</h3>
                         <div class="formula-text">
-                            <p>压降                   水的Kv值(m3/h)             气体的Kv值(m3/h)</p>
-                            <p>次临界P2>1/2P1  =Q*sqrt(ρ/(1000*ΔP))  =QN/514*sqrt(T1*ρN/(P2*ΔP))</p>
-                            <p>超临界P2<1/2P1  =Q*sqrt(ρ/(1000*ΔP))  =QN/(257*P1)*sqrt(T1*ρN)</p>
+                            <table class="formula-table">
+                                <thead>
+                                    <tr>
+                                        <th>压降</th>
+                                        <th>水的Kv值(m3/h)</th>
+                                        <th>气体的Kv值(m3/h)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>次临界P2>1/2P1</td>
+                                        <td>$$=Q\cdot\sqrt{\frac{\rho}{1000\cdot\Delta P}}$$</td>
+                                        <td>$$=\frac{QN}{514}\cdot\sqrt{\frac{T1\cdot\rho N}{P2\cdot\Delta P}}$$</td>
+                                    </tr>
+                                    <tr>
+                                        <td>超临界P2<1/2P1</td>
+                                        <td>$$=Q\cdot\sqrt{\frac{\rho}{1000\cdot\Delta P}}$$</td>
+                                        <td>$$=\frac{QN}{257\cdot P1}\cdot\sqrt{T1\cdot\rho N}$$</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="formula-explanation">
                             <p>Kv 流量系数[m3/h]</p>
@@ -659,7 +695,7 @@
             <!-- 第六页：换热器/中冷器计算 -->
             <div class="tab-content" id="heat-exchanger">
                 <div class="section">
-                    <h2>换热器/中冷器计算参数</h2>
+                    
                     <div class="input-container">
                         <div class="input-column">
                             <h3>散热器计算</h3>
@@ -939,12 +975,12 @@
                 <p>4、第二页空气热力计算海拔高度只会影响空压机的功耗，不会对第一页绝压计算产生影响。</p>
                 <p>5、可以同时打开多个窗口进行结果对比；</p>
                 <p>6、空气热力计算可计算海拔为30000米；</p>
-                <p>7、欢迎大家使用此程序如发现问题或改进意见请发邮箱363383119@qq.com。</p>
+                
             </div>
         </div>
     </div>
     
-    <script src="script.js"></script>
+    <script src="script.js?v=1"></script>
 <footer>
     <div class="footer-content">
         <p>© 2025 Fuel Cell Calculator. All rights reserved. <a href="#about" onclick="showModal('about')">关于我们</a> | <a href="#contact" onclick="showModal('contact')">联系我们</a></p>
@@ -976,12 +1012,12 @@
         <div class="modal-grid">
             <div class="modal-column">
                 <h2>关于我们</h2>
-                <p>Fuel Cell Calculator 是一个专业的燃料电池计算工具，由专业团队开发，旨在为工程师和研究人员提供准确的计算服务。</p>
+                <p>Fuel Cell Calculator 是一个专业的燃料电池计算工具，旨在为工程师和研究人员提供准确的计算服务。</p>
             </div>
             <div class="modal-column">
                 <h2>联系我们</h2>
                 <p>如有任何问题或建议，请通过以下方式联系我们：</p>
-                <p>邮箱: contact@fuelcellcalculator.com</p>
+                <p>邮箱: 363383119@qq.com</p>
                 <p>电话: 400-123-4567</p>
             </div>
         </div>

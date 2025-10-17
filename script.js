@@ -100,7 +100,7 @@ window.addEventListener('DOMContentLoaded', function() {
     if (mediumType) {
         mediumType.addEventListener('change', function() {
             const density = this.value;
-            selectedDensity.textContent = `选择介质的密度为: ${density}`;
+            selectedDensity.textContent = `选择介质的密度为: ${density} kg/m³`;
         });
     }
     
@@ -135,7 +135,7 @@ window.addEventListener('DOMContentLoaded', function() {
     // 监听介质选择变化
     document.getElementById('mediumType').addEventListener('change', function() {
         // 更新显示的介质密度
-        document.getElementById('selectedDensity').textContent = '选择介质的密度为: ' + this.value;
+        document.getElementById('selectedDensity').textContent = '选择介质的密度为: ' + this.value + ' kg/m³';
         // 重新计算阀门流体结果
         calculateValveFlow();
     });
@@ -674,8 +674,19 @@ function calculateValveFlow() {
     }
     
     // 更新结果显示
-    document.getElementById('KvValue').textContent = KvValue.toFixed(4);
-    document.getElementById('valveDiameter').textContent = valveDiameter.toFixed(3);
+    const kvElement = document.getElementById('KvValue');
+    const dnElement = document.getElementById('valveDiameter');
+    kvElement.textContent = KvValue.toFixed(4);
+    dnElement.textContent = valveDiameter.toFixed(3);
+    
+    // 当Kv值大于1或小于0.012时，将Kv值和DN值显示为红色
+    if (KvValue > 1 || KvValue < 0.012) {
+        kvElement.style.color = 'red';
+        dnElement.style.color = 'red';
+    } else {
+        kvElement.style.color = '';
+        dnElement.style.color = '';
+    }
 }
 
 // 第五页：管路压损计算
