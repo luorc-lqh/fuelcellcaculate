@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="supabase/config.js"></script>
     <script>
         MathJax = {
             tex: {
@@ -30,7 +32,7 @@
     <div class="container">
         <header>
     <div style="display: flex; align-items: center;">
-        <svg width="32" height="32" viewBox="0 0 32 32" style="margin-right: 12px; margin-left: 8px;">
+        <svg width="40" height="40" viewBox="0 0 32 32" style="margin-right: 12px; margin-left: 8px;">
             <!-- 简化的新月 -->
             <path fill="#ffffff" d="M16 7c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-2.72-1.19-5.17-3.21-6.84l1.42-1.42C21.46 9.58 23 12.17 23 15c0 3.87-3.13 7-7 7s-7-3.13-7-7 3.13-7 7-7z"/>
             <!-- 简化的帆船 -->
@@ -39,8 +41,16 @@
         <h1>Fuel Cell 计算器 V2.20</h1>
         <button id="versionLogButton" class="version-log-button" title="查看版本更新日志">ℹ️</button>
     </div>
-    <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 10px;">
         <button id="downloadButton" class="download-button">下载离线版</button>
+        <div id="userInfo" class="user-info" style="display: none;">
+            <span id="userEmail" class="user-email"></span>
+            <button id="userMenuButton" class="user-menu-button">▼</button>
+            <div id="userMenu" class="user-menu" style="display: none;">
+                <div class="user-menu-item" id="viewProfile">查看资料</div>
+                <div class="user-menu-item" id="logoutButton">退出登录</div>
+            </div>
+        </div>
         <button id="loginButton" class="login-button">登录</button>
     </div>
 </header>
@@ -974,7 +984,7 @@
                 <p>3、设计输入可以根据不同电堆和工况点进行保存和导入；</p>
                 <p>4、第二页空气热力计算海拔高度只会影响空压机的功耗，不会对第一页绝压计算产生影响。</p>
                 <p>5、可以同时打开多个窗口进行结果对比；</p>
-                <p>6、空气热力计算可计算海拔为30000米；</p>
+                
                 
             </div>
         </div>
@@ -990,19 +1000,57 @@
 <div class="login-modal" id="loginModal">
     <div class="modal-content">
         <span class="close-button">&times;</span>
-        <h2>登录</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username">用户名:</label>
-                <input type="text" id="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">密码:</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit">登录</button>
-            <button type="button" id="registerButton">注册</button>
-        </form>
+        
+        <!-- 错误信息显示 -->
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        
+        <!-- 加载状态 -->
+        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+            <div class="spinner"></div>
+            <span>处理中...</span>
+        </div>
+        
+        <!-- 登录界面 -->
+        <div id="loginSection">
+            <h2>登录</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">邮箱:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">密码:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit">登录</button>
+                <p class="switch-form">
+                    还没有账户？<a href="#" id="showRegister">立即注册</a>
+                </p>
+            </form>
+        </div>
+        
+        <!-- 注册界面 -->
+        <div id="registerSection" style="display: none;">
+            <h2>注册</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerEmail">邮箱:</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">密码:</label>
+                    <input type="password" id="registerPassword" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">确认密码:</label>
+                    <input type="password" id="confirmPassword" required minlength="6">
+                </div>
+                <button type="submit">注册</button>
+                <p class="switch-form">
+                    已有账户？<a href="#" id="showLogin">立即登录</a>
+                </p>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -1018,7 +1066,7 @@
                 <h2>联系我们</h2>
                 <p>如有任何问题或建议，请通过以下方式联系我们：</p>
                 <p>邮箱: 363383119@qq.com</p>
-                <p>电话: 400-123-4567</p>
+                <p>电话: 400-123-1234</p>
             </div>
         </div>
     </div>

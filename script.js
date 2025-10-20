@@ -23,9 +23,15 @@ window.addEventListener('DOMContentLoaded', function() {
     const downloadButton = document.getElementById('downloadButton');
     if (downloadButton) {
         downloadButton.addEventListener('click', function() {
-            const loginButton = document.getElementById('loginButton');
-            // 检查是否已登录（通过按钮文本判断）
-            if (loginButton && loginButton.textContent.trim() === '已登录') {
+            // 检查是否已登录（使用正确的登录状态检查方式）
+            // 方法1：检查userInfo元素是否显示
+            const userInfo = document.getElementById('userInfo');
+            const isLoggedIn = userInfo && userInfo.style.display !== 'none';
+            
+            // 方法2：如果login.js中的isUserLoggedIn函数可用，也可以使用
+            // const isLoggedIn = typeof isUserLoggedIn === 'function' ? isUserLoggedIn() : false;
+            
+            if (isLoggedIn) {
                 // 已登录，执行下载
                 const downloadLink = document.createElement('a');
                 downloadLink.href = 'FuelCellCalculator.exe';
@@ -36,7 +42,8 @@ window.addEventListener('DOMContentLoaded', function() {
             } else {
                 // 未登录，提示登录
                 alert('请先登录才能下载离线版！');
-                // 可选：自动打开登录模态框
+                // 自动打开登录模态框
+                const loginButton = document.getElementById('loginButton');
                 if (loginButton) {
                     loginButton.click();
                 }
