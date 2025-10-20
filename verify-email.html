@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邮箱验证 - 燃料电池计算器</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="supabase/config.js"></script>
+    <style>
+        .verification-container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .verification-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .success-icon {
+            color: #4CAF50;
+        }
+        
+        .error-icon {
+            color: #f44336;
+        }
+        
+        .loading-icon {
+            color: #2196F3;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .verification-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .verification-message {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .error-details {
+            background: #ffebee;
+            border: 1px solid #ffcdd2;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #c62828;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-container">
+        <div id="loadingState">
+            <div class="verification-icon loading-icon">⟳</div>
+            <h1 class="verification-title">正在验证邮箱...</h1>
+            <p class="verification-message">请稍候，我们正在处理您的邮箱验证。</p>
+        </div>
+        
+        <div id="successState" style="display: none;">
+            <div class="verification-icon success-icon">✓</div>
+            <h1 class="verification-title">邮箱验证成功！</h1>
+            <p class="verification-message">
+                恭喜！您的邮箱已成功验证。<br>
+                现在您可以使用完整的功能了。
+            </p>
+            <a href="index.html?verified=true" class="btn-primary">返回主页</a>
+        </div>
+        
+        <div id="errorState" style="display: none;">
+            <div class="verification-icon error-icon">✗</div>
+            <h1 class="verification-title">验证失败</h1>
+            <p class="verification-message">
+                很抱歉，邮箱验证失败。这可能是因为：<br>
+                • 验证链接已过期<br>
+                • 验证链接无效<br>
+                • 网络连接问题
+            </p>
+            <div id="errorDetails" class="error-details" style="display: none;"></div>
+            <a href="index.html" class="btn-primary">返回主页</a>
+        </div>
+    </div>
+
+    <script>
+        // 初始化Supabase客户端
+        let supabaseClient = null;
+
+        // 初始化Supabase
+        function initializeSupabase() {
+            try {
+                if (typeof supabase === 'undefined') {
+                    console.error('Supabase not loaded');
+                    return false;
+                }
+                
+                if (!window.SUPABASE_URL || !window.SUPABASE_ANON_KEY) {
+                    console.error('Supabase config not found');
+                    return false;
+                }
+                
+                supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+                console.log('Supabase initialized successfully');
+                return true;
+            } catch (error) {
+                console.error('Error initializing Supabase:', error);
+                return false;
+            }
+        }
+
+        // 显示状态
+        function showState(state) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('successState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+            
+            if (state === 'loading') {
+                document.getElementById('loadingState').style.display = 'block';
+            } else if (state === 'success') {
+                document.getElementById('successState').style.display = 'block';
+            } else if (state === 'error') {
+                document.getElementById('errorState').style.display = 'block';
+            }
+        }
+
+        // 显示错误详情
+        function showErrorDetails(error) {
+            const errorDetails = document.getElementById('errorDetails');
+            errorDetails.textContent = `错误详情: ${error.message || error}`;
+            errorDetails.style.display = 'block';
+        }
+
+        // 处理邮箱验证
+        async function handleEmailVerification() {
+            try {
+                showState('loading');
+                
+                // 初始化Supabase
+                if (!initializeSupabase()) {
+                    throw new Error('无法初始化Supabase客户端');
+                }
+
+                // 检查URL中是否包含访问令牌（通常在URL片段中）
+                const urlParams = new URLSearchParams(window.location.search);
+                const hashParams = new URLSearchParams(window.location.hash.substring(1));
+                
+                // 尝试从查询参数或哈希片段中获取令牌
+                let accessToken = urlParams.get('access_token') || hashParams.get('access_token');
+                let refreshToken = urlParams.get('refresh_token') || hashParams.get('refresh_token');
+                let tokenType = urlParams.get('token_type') || hashParams.get('token_type');
+                let type = urlParams.get('type') || hashParams.get('type');
+                
+                console.log('URL params:', Object.fromEntries(urlParams));
+                console.log('Hash params:', Object.fromEntries(hashParams));
+                console.log('Verification tokens:', { accessToken, refreshToken, tokenType, type });
+
+                // 如果有访问令牌，设置会话
+                if (accessToken && refreshToken) {
+                    console.log('Setting session with tokens...');
+                    const { data, error } = await supabaseClient.auth.setSession({
+                        access_token: accessToken,
+                        refresh_token: refreshToken
+                    });
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    console.log('Session set successfully:', data);
+                    showState('success');
+
+                    // 自动跳转到主页
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                    
+                } else {
+                    // 尝试获取当前会话（可能已经通过URL自动设置）
+                    console.log('Checking current session...');
+                    const { data: session, error: sessionError } = await supabaseClient.auth.getSession();
+                    
+                    if (sessionError) {
+                        throw sessionError;
+                    }
+                    
+                    if (session?.session?.user) {
+                        console.log('User session found:', session.session.user);
+                        showState('success');
+                        
+                        // 自动跳转到主页
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 3000);
+                    } else {
+                        // 如果没有会话，尝试使用传统的OTP验证方法
+                        const token = urlParams.get('token') || urlParams.get('token_hash');
+                        
+                        if (token) {
+                            console.log('Trying OTP verification with token:', token);
+                            const { data, error } = await supabaseClient.auth.verifyOtp({
+                                token_hash: token,
+                                type: type || 'email'
+                            });
+
+                            if (error) {
+                                throw error;
+                            }
+
+                            console.log('OTP verification successful:', data);
+                            showState('success');
+
+                            // 自动跳转到主页，并添加验证成功标记
+                            setTimeout(() => {
+                                window.location.href = 'index.html?verified=true';
+                            }, 3000);
+                        } else {
+                            throw new Error('未找到有效的验证令牌。请检查验证链接是否完整。');
+                        }
+                    }
+                }
+
+            } catch (error) {
+                console.error('Email verification failed:', error);
+                showErrorDetails(error);
+                showState('error');
+            }
+        }
+
+        // 页面加载完成后开始验证
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟一点时间让用户看到加载状态
+            setTimeout(handleEmailVerification, 1000);
+        });
+    </script>
+</body>
+</html>

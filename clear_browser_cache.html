@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清除浏览器缓存和登录状态</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            border-radius: 5px;
+        }
+        .step h3 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+        .button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #c82333;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .code {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 3px;
+            padding: 10px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 清除浏览器缓存和登录状态</h1>
+        
+        <div class="warning">
+            <strong>⚠️ 注意：</strong>执行以下操作将清除所有登录状态和缓存数据，您需要重新登录所有网站。
+        </div>
+
+        <div class="step">
+            <h3>1. 清除 localStorage 和 sessionStorage</h3>
+            <p>清除本地存储的登录令牌和会话数据</p>
+            <button class="button" onclick="clearStorage()">清除本地存储</button>
+            <div id="storageSuccess" class="success">✅ 本地存储已清除</div>
+        </div>
+
+        <div class="step">
+            <h3>2. 清除 Cookies</h3>
+            <p>清除所有相关的认证 Cookie</p>
+            <button class="button" onclick="clearCookies()">清除 Cookies</button>
+            <div id="cookieSuccess" class="success">✅ Cookies 已清除</div>
+        </div>
+
+        <div class="step">
+            <h3>3. 清除浏览器缓存</h3>
+            <p>手动清除浏览器缓存，或使用快捷键：</p>
+            <div class="code">
+                Windows/Linux: Ctrl + Shift + Delete<br>
+                Mac: Cmd + Shift + Delete
+            </div>
+            <p>在弹出的对话框中选择：</p>
+            <ul>
+                <li>✅ 浏览历史记录</li>
+                <li>✅ Cookie 和其他网站数据</li>
+                <li>✅ 缓存的图片和文件</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>4. 重新加载页面</h3>
+            <p>清除完成后，重新加载页面以确保所有缓存都已清除</p>
+            <button class="button" onclick="reloadPage()">重新加载页面</button>
+        </div>
+
+        <div class="step">
+            <h3>5. 验证清除结果</h3>
+            <p>检查当前存储状态：</p>
+            <button class="button" onclick="checkStorage()" style="background: #28a745;">检查存储状态</button>
+            <div id="storageStatus" style="margin-top: 10px;"></div>
+        </div>
+    </div>
+
+    <script>
+        function clearStorage() {
+            try {
+                // 清除 localStorage
+                localStorage.clear();
+                
+                // 清除 sessionStorage
+                sessionStorage.clear();
+                
+                // 显示成功消息
+                document.getElementById('storageSuccess').style.display = 'block';
+                
+                console.log('✅ 本地存储已清除');
+            } catch (error) {
+                console.error('❌ 清除本地存储失败:', error);
+                alert('清除本地存储失败: ' + error.message);
+            }
+        }
+
+        function clearCookies() {
+            try {
+                // 获取当前域名的所有 cookies
+                const cookies = document.cookie.split(";");
+                
+                // 删除每个 cookie
+                for (let cookie of cookies) {
+                    const eqPos = cookie.indexOf("=");
+                    const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                    
+                    // 删除 cookie（设置过期时间为过去）
+                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=." + window.location.hostname;
+                }
+                
+                // 显示成功消息
+                document.getElementById('cookieSuccess').style.display = 'block';
+                
+                console.log('✅ Cookies 已清除');
+            } catch (error) {
+                console.error('❌ 清除 Cookies 失败:', error);
+                alert('清除 Cookies 失败: ' + error.message);
+            }
+        }
+
+        function reloadPage() {
+            // 强制重新加载页面（绕过缓存）
+            window.location.reload(true);
+        }
+
+        function checkStorage() {
+            const statusDiv = document.getElementById('storageStatus');
+            
+            let status = '<h4>存储状态检查：</h4>';
+            
+            // 检查 localStorage
+            const localStorageCount = localStorage.length;
+            status += `<p>📦 localStorage 项目数: ${localStorageCount}</p>`;
+            
+            // 检查 sessionStorage
+            const sessionStorageCount = sessionStorage.length;
+            status += `<p>🗂️ sessionStorage 项目数: ${sessionStorageCount}</p>`;
+            
+            // 检查 cookies
+            const cookieCount = document.cookie.split(';').filter(c => c.trim()).length;
+            status += `<p>🍪 Cookies 数量: ${cookieCount}</p>`;
+            
+            // 显示 Supabase 相关的存储
+            const supabaseKeys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.includes('supabase')) {
+                    supabaseKeys.push(key);
+                }
+            }
+            
+            if (supabaseKeys.length > 0) {
+                status += `<p>🔑 Supabase 相关存储: ${supabaseKeys.join(', ')}</p>`;
+            } else {
+                status += `<p>✅ 无 Supabase 相关存储</p>`;
+            }
+            
+            statusDiv.innerHTML = status;
+        }
+
+        // 页面加载时自动检查存储状态
+        window.onload = function() {
+            checkStorage();
+        };
+    </script>
