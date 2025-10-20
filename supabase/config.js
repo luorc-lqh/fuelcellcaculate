@@ -1,0 +1,3 @@
+// Supabase配置文件
+window.SUPABASE_URL = 'https://piffnomsahgabaxxdumq.supabase.co';
+window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpZmZub21zYWhnYWJheHhkdW1xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MjgyNjMsImV4cCI6MjA3NjQwNDI2M30.r4m5c89DAWHxE_XJyfw6bPVE5A3X2D1KDVljrpt71us';
