@@ -1078,8 +1078,12 @@ function calculateHybridSystem() {
     // 动力电池所需功率 - 按照用户公式 ((电机峰值功率_value/r8-燃料电池所需功率_value)/s8)
     const batteryRequiredPower = (motorPeakPower / safeMotorEfficiency - fuelCellRequiredPower) / safeBatteryEfficiency; // 动力电池所需功率(kW)
     
-    // 额定工况氢耗 - 按照用户公式 (燃料电池所需功率_value*1000/0.62/96485)
-    const ratedConditionHydrogenConsumption = fuelCellRequiredPower * 1000 / 0.62 / 96485; // 额定工况氢耗(g/s)
+    // 获取额定工况PEM节电压和氢气利用率
+    const pemCellVoltage = parseFloat(document.getElementById('pemCellVoltage').value) || 0.62;
+    const hydrogenUtilization = parseFloat(document.getElementById('hydrogenUtilization').value) || 98.5;
+    
+    // 额定工况氢耗 - 修改后的公式 (燃料电池所需功率_value*1000/额定工况PEM节电压/96485/(氢气利用率/100))
+    const ratedConditionHydrogenConsumption = fuelCellRequiredPower * 1000 / pemCellVoltage / 96485 / (hydrogenUtilization / 100); // 额定工况氢耗(g/s)
     
     // PEM所需氢气质量 - 按照用户公式 (b8/e8*3600*额定工况氢耗_value/1000)
     const requiredHydrogenMass = range / maxSpeed * 3600 * ratedConditionHydrogenConsumption / 1000; // 所需氢气质量(Kg)
@@ -1091,6 +1095,15 @@ function calculateHybridSystem() {
     // 确保单瓶氢气质量不为零，避免除零错误
     const safeSingleBottleHydrogenMass = Math.max(0.1, singleBottleHydrogenMass);
     const requiredBottleCount = requiredHydrogenMass / safeSingleBottleHydrogenMass; // 所需氢瓶数量(n)
+    
+    // 获取氢气价格
+    const hydrogenPrice = parseFloat(document.getElementById('hydrogenPrice').value) || 30;
+    
+    // 额定百公里氢耗 - 按照用户公式 (额定工况PEM氢耗 * 100 / 最高车速 * 3600 / 1000)
+    const rated100kmHydrogenConsumption = ratedConditionHydrogenConsumption * 100 / maxSpeed * 3600 / 1000; // 额定百公里氢耗(kg/100km)
+    
+    // 额定百公里氢气价格 - 按照用户公式 (额定百公里氢耗 * 氢气价格)
+    const rated100kmHydrogenPrice = rated100kmHydrogenConsumption * hydrogenPrice; // 额定百公里氢气价格(元/100km)
     
     // 更新结果显示
     document.getElementById('maxClimbingAngle').textContent = maxClimbingAngle.toFixed(2);
@@ -1109,6 +1122,8 @@ function calculateHybridSystem() {
     document.getElementById('singleBottleHydrogenMass').textContent = singleBottleHydrogenMass.toFixed(3); // 质量单位保留3位小数
     document.getElementById('requiredBottleCount').textContent = requiredBottleCount.toFixed(2); // 氢瓶数量保留2位小数
     document.getElementById('batteryRequiredPower').textContent = batteryRequiredPower.toFixed(2);
+    document.getElementById('rated100kmHydrogenConsumption').textContent = rated100kmHydrogenConsumption.toFixed(4); // 百公里氢耗保留4位小数
+    document.getElementById('rated100kmHydrogenPrice').textContent = rated100kmHydrogenPrice.toFixed(2); // 百公里氢气价格保留2位小数
 }
 
 // 实用小工具 - 求和功能

@@ -38,7 +38,7 @@
             <!-- 简化的帆船 -->
             <path fill="#ffffff" d="M16 22l-5-4.5 1-4.5 4 4.5 4-4.5 1 4.5-5 4.5zM11 13l4 3.5v4l-4-3.5z"/>
         </svg>
-        <h1>Fuel Cell 计算器 V2.20</h1>
+        <h1>Fuel Cell 计算器 V2.21</h1>
         <button id="versionLogButton" class="version-log-button" title="查看版本更新日志">ℹ️</button>
     </div>
     <div style="display: flex; align-items: center; gap: 10px;">
@@ -266,7 +266,7 @@
                         <div class="result-item" title="过饱和水冷凝放热量(kW) = 冷凝水放热 + 阳极冷凝水放热"><span>过饱和水冷凝放热量(kW)：</span><span id="superSaturatedWaterCondensationHeat"></span></div>
                         <div class="result-item" title="中冷器热负荷(kW) = 1.005*(系统供空气量*28.96/1000)*(空压机出口温度-中冷器出口温度)"><span>中冷器热负荷(kW)：</span><span id="intercoolerHeatLoad"></span></div>
                         <div class="result-item" title="系统总热负荷(kW) = 中冷器热负荷 + 过饱和水冷凝放热量 + 反应产热量"><span>系统总热负荷(kW)：</span><span id="systemTotalHeatLoad"></span></div>
-                        <div class="result-item" title="电堆冷却液流量(L/min) = 系统总热负荷/温度差/冷却液密度/冷却液比热*1000*60"><span>电堆冷却液流量(L/min)：</span><span id="stackCoolantFlow"></span></div>
+                        <div class="result-item" title="系统冷却液流量(L/min) = 系统总热负荷/温度差/冷却液密度/冷却液比热*1000*60"><span>系统冷却液流量(L/min)：</span><span id="stackCoolantFlow"></span></div>
                         
                         <h3 style="margin-top: 0px;">COG加湿器</h3>
                         <div class="result-item" title="干气加湿用水量(mol/s) = (阴极出口总水量 - 出口液态水量)*加湿器效率/100"><span>干气加湿用水量(mol/s)：</span><span id="dryGasHumidificationWater"></span></div>
@@ -382,7 +382,7 @@
                 </div>
                 
                 <div class="note">
-                    注：流量数据与第一页关联，压力为绝压。可计算海拔高度为30000米。
+                    注：流量数据与第一页关联，压力为绝压，是单位为Pa。可计算海拔高度为30000米。
                 </div>
                 
                 <!-- 参考文献部分 -->
@@ -880,6 +880,14 @@
                             <label for="hydrogenBottleVolume">氢气瓶容积(L):</label>
                             <input type="number" id="hydrogenBottleVolume" value="40" step="1">
                         </div>
+                        <div class="input-group">
+                            <label for="pemCellVoltage">额定工况PEM节电压(V):</label>
+                            <input type="number" id="pemCellVoltage" value="0.62" step="0.001">
+                        </div>
+                        <div class="input-group">
+                            <label for="hydrogenPrice">氢气价格(元/kg):</label>
+                            <input type="number" id="hydrogenPrice" value="30" step="0.1">
+                        </div>
                     </div>
                 </div>
                 
@@ -904,8 +912,8 @@
                         
                         <!-- 第三组：第一行第二列 -->
                         <div class="result-section">
-                            <div class="result-item" title="燃料电池所需功率(kW) = 电机额定功率 + 整车附件功率"><span>燃料电池所需功率(kW)：</span><span id="fuelCellRequiredPower"></span></div>
-                            <div class="result-item" title="额定工况PEM氢耗(g/s) = 燃料电池所需功率*1000/0.62/96485"><span>额定工况PEM氢耗(g/s)：</span><span id="ratedConditionHydrogenConsumption"></span></div>
+                            <div class="result-item" title="燃料电池额定功率(kW) = 电机额定功率 + 整车附件功率"><span>燃料电池额定功率(kW)：</span><span id="fuelCellRequiredPower"></span></div>
+                            <div class="result-item" title="额定工况PEM氢耗(g/s) = 燃料电池所需功率*1000/额定工况PEM节电压/96485/(氢气利用率/100)"><span>额定工况PEM氢耗(g/s)：</span><span id="ratedConditionHydrogenConsumption"></span></div>
                             <div class="result-item" title="PEM所需氢气质量(Kg) = 续驶里程/最高车速*3600*额定工况氢耗/1000"><span>PEM所需氢气质量(Kg)：</span><span id="requiredHydrogenMass"></span></div>
                             <div class="result-item" title="单瓶存储氢气质量(Kg) = 氢气瓶压力*1000*氢气瓶容积/8.314/298*2.016/1000"><span>单瓶存储氢气质量(Kg)：</span><span id="singleBottleHydrogenMass"></span></div>
                             <div class="result-item" title="所需氢瓶数量(n) = PEM所需氢气质量/单瓶存储氢气质量"><span>所需氢瓶数量(n)：</span><span id="requiredBottleCount"></span></div>
@@ -914,6 +922,8 @@
                         <!-- 第四组：第一行第三列 -->
                         <div class="result-section">
                             <div class="result-item" title="动力电池所需功率(kW) = (电机峰值功率/驱动电机及控制器效率-燃料电池所需功率)/动力电池效率"><span>动力电池所需功率(kW)：</span><span id="batteryRequiredPower"></span></div>
+                            <div class="result-item" title="额定百公里氢耗(kg/100km) = 额定工况PEM氢耗 * 100 / 最高车速 * 3600 / 1000"><span>额定百公里氢耗(kg/100km)：</span><span id="rated100kmHydrogenConsumption"></span></div>
+                            <div class="result-item" title="额定百公里氢气价格(元/100km) = 额定百公里氢耗 * 氢气价格"><span>额定百公里氢气价格(元/100km)：</span><span id="rated100kmHydrogenPrice"></span></div>
                         </div>
                     </div>
                 </div>
@@ -980,7 +990,7 @@
             </div>
             <div class="dialog-body">
                 <p>1、第一页为绝压计算，计算参数大多基于电密和节数；</p>
-                <p>2、此程序可以计算自增湿电堆，保持加湿器输入为零即可；</p>
+                <p>2、此程序可以计算自增湿电堆，保持加湿器输入为零即可如计算强迫加湿需要将环境湿度设为0；</p>
                 <p>3、设计输入可以根据不同电堆和工况点进行保存和导入；</p>
                 <p>4、第二页空气热力计算海拔高度只会影响空压机的功耗，不会对第一页绝压计算产生影响。</p>
                 <p>5、可以同时打开多个窗口进行结果对比；</p>
@@ -1060,7 +1070,7 @@
         <div class="modal-grid">
             <div class="modal-column">
                 <h2>关于我们</h2>
-                <p>Fuel Cell Calculator 是一个专业的燃料电池计算工具，旨在为工程师和研究人员提供准确的计算服务。</p>
+                <p>Fuel Cell Calculator 是一个专业的燃料电池计算工具，旨在为工程师和研究人员提供准确的计算服务。感谢程同学在软件开发中提供的支持和校对工作。</p>
             </div>
             <div class="modal-column">
                 <h2>联系我们</h2>
@@ -1079,6 +1089,15 @@
         <h2>版本更新日志</h2>
         
         <div class="version-log-content">
+            <div class="version-entry">
+                <h3>V2.21 更新内容</h3>
+                <ul>
+                    <li>增加第七页额定百公里氢耗和价格</li>
+                    <li>增加了第一页强迫加湿环境湿度设置问题</li>
+                    <li>修正bug</li>
+                </ul>
+            </div>
+            
             <div class="version-entry">
                 <h3>V2.20 更新内容</h3>
                 <ul>
