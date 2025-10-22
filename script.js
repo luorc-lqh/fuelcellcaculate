@@ -415,7 +415,7 @@ const translations = {
         pipelinePressureTitle: '管路压损计算参数',
         gasCalculation: '气路计算',
         gasStdDensity: '介质标况密度(kg/m3)',
-        gasPressure: '介质压力(kPa)',
+        gasPressure: '介质压力(Pa)',
         gasTemperature: '介质温度(K)',
         gasFlowRate: '介质流量(NLPM)',
         mainPipeDiameter: '主管内径(mm)',
@@ -710,7 +710,6 @@ const translations = {
         contactUsTitle: '联系我们',
         contactUsContent: '如有任何问题或建议，请通过以下方式联系我们：',
         contactEmail: '邮箱: 363383119@qq.com',
-        contactPhone: '电话: 400-123-1234',
         
         // Login/Register Modal
         loginTitle: '登录',
@@ -1070,7 +1069,7 @@ const translations = {
         pipelinePressureTitle: 'Pipeline Pressure Loss',
         gasCalculation: 'Gas Calculation',
         gasStdDensity: 'Medium Standard Density (kg/m3)',
-        gasPressure: 'Medium Pressure (kPa)',
+        gasPressure: 'Medium Pressure (Pa)',
         gasTemperature: 'Medium Temperature (K)',
         gasFlowRate: 'Medium Flow Rate (NLPM)',
         mainPipeDiameter: 'Main Pipe Inner Diameter (mm)',
@@ -1259,7 +1258,6 @@ const translations = {
         contactUsTitle: 'Contact Us',
         contactUsContent: 'If you have any questions or suggestions, please contact us through the following methods:',
         contactEmail: 'Email: 363383119@qq.com',
-        contactPhone: 'Phone: 400-123-1234',
         
         // Login/Register Modal
         loginTitle: 'Login',
@@ -1709,7 +1707,7 @@ const translations = {
         pipelinePressureTitle: '配管圧力損失',
         gasCalculation: 'ガス計算',
         gasStdDensity: '媒体標準密度 (kg/m3)',
-        gasPressure: '媒体圧力 (kPa)',
+        gasPressure: '媒体圧力 (Pa)',
         gasTemperature: '媒体温度 (K)',
         gasFlowRate: '媒体流量 (NLPM)',
         mainPipeDiameter: '主配管内径 (mm)',
@@ -1913,7 +1911,6 @@ const translations = {
         contactUsTitle: 'お問い合わせ',
         contactUsContent: 'ご質問やご提案がございましたら、以下の方法でお問い合わせください：',
         contactEmail: 'メール: 363383119@qq.com',
-        contactPhone: '電話: 400-123-1234',
         
         // Login/Register Modal
         loginTitle: 'ログイン',
@@ -2261,7 +2258,7 @@ const translations = {
         pipelinePressureTitle: '배관 압력 손실',
         gasCalculation: '기체 계산',
         gasStdDensity: '매체 표준 밀도 (kg/m3)',
-        gasPressure: '매체 압력 (kPa)',
+        gasPressure: '매체 압력 (Pa)',
         gasTemperature: '매체 온도 (K)',
         gasFlowRate: '매체 유량 (NLPM)',
         mainPipeDiameter: '주관 내경 (mm)',
@@ -2495,7 +2492,6 @@ const translations = {
         contactUsTitle: '연락처',
         contactUsContent: '질문이나 제안이 있으시면 다음 방법으로 연락해 주십시오:',
         contactEmail: '이메일: 363383119@qq.com',
-        contactPhone: '전화: 400-123-1234',
         
         // Login/Register Modal
         loginTitle: '로그인',
