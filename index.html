@@ -39,9 +39,14 @@
             <path fill="#ffffff" d="M16 22l-5-4.5 1-4.5 4 4.5 4-4.5 1 4.5-5 4.5zM11 13l4 3.5v4l-4-3.5z"/>
         </svg>
         <h1>Fuel Cell 计算器 V2.21</h1>
-        <button id="versionLogButton" class="version-log-button" title="查看版本更新日志">ℹ️</button>
+        <button id="versionLogButton" class="version-log-button">V</button>
     </div>
     <div style="display: flex; align-items: center; gap: 10px;">
+        <button id="githubButton" class="github-button" title="查看源代码">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+        </button>
         <button id="downloadButton" class="download-button">下载离线版</button>
         <div id="userInfo" class="user-info" style="display: none;">
             <span id="userEmail" class="user-email"></span>
@@ -52,6 +57,17 @@
             </div>
         </div>
         <button id="loginButton" class="login-button">登录</button>
+        <div class="language-selector">
+            <button id="languageButton" class="language-button" title="切换语言">
+                🌐 <span id="currentLanguage">简体中文</span> ▼
+            </button>
+            <div id="languageMenu" class="language-menu" style="display: none;">
+                <div class="language-menu-item" data-lang="zh-CN">简体中文</div>
+                <div class="language-menu-item" data-lang="en">English</div>
+                <div class="language-menu-item" data-lang="ja">日本語</div>
+                <div class="language-menu-item" data-lang="ko">한국어</div>
+            </div>
+        </div>
     </div>
 </header>
         
@@ -200,85 +216,85 @@
                 <div class="results-container">
                     <div class="result-section">
                         <h3>电堆计算</h3>
-                        <div class="result-item" title="电堆电流(A) = 反应面积(cm²) * 电流密度(A/cm²)"><span>电堆电流(A)：</span><span id="stackCurrent"></span></div>
-                        <div class="result-item" title="电堆电压(V) = 单电池电压(V) * 电堆节数"><span>电堆电压(V)：</span><span id="stackVoltage"></span></div>
-                        <div class="result-item" title="电堆功率(kW) = (电堆电流 * 电堆电压) / 1000"><span>电堆功率(kW)：</span><span id="stackPower"></span></div>
-                        <div class="result-item" title="理论反应消耗氢气量(mol/s) = (反应面积 * 电流密度 * 电堆节数) / (96485 * 2)"><span>理论反应消耗氢气量(mol/s)：</span><span id="theoreticalHydrogenConsumption"></span></div>
-                        <div class="result-item" title="理论反应消耗氧气量(mol/s) = 理论反应消耗氢气量 / 2"><span>理论反应消耗氧气量(mol/s)：</span><span id="theoreticalOxygenConsumption"></span></div>
-                        <div class="result-item" title="理论反应产水量(mol/s) = 理论反应消耗氢气量"><span>理论反应产水量(mol/s)：</span><span id="theoreticalWaterProduction"></span></div>
-                        <div class="result-item" title="实际入口H2流量(mol/s) = 理论反应消耗氢气量 * 氢气计量比"><span>实际入口H2流量(mol/s)：</span><span id="actualHydrogenFlow"></span></div>
-                        <div class="result-item" title="实际入口Air流量(mol/s) = (理论反应消耗氢气量 / 2) * 空气计量比 / 0.21"><span>实际入口Air流量(mol/s)：</span><span id="actualAirFlow"></span></div>
-                        <div class="result-item" title="实际入口H2流量(NLPM) = 实际入口H2流量(mol/s) * 22.4 * 60"><span>实际入口H2流量(NLPM)：</span><span id="actualHydrogenFlowNLPM"></span></div>
-                        <div class="result-item" title="实际入口Air流量(NLPM) = 实际入口Air流量(mol/s) * 22.4 * 60"><span>实际入口Air流量(NLPM)：</span><span id="actualAirFlowNLPM"></span></div>
-                        <div class="result-item" title="反应产热量(LHV-kW) = 电堆功率 * (1.254 - 单电池电压) / 单电池电压"><span>反应产热量(LHV-kW)：</span><span id="reactionHeat"></span></div>
-                        <div class="result-item" title="电堆效率(%) = (单电池电压 / 1.254) * 100"><span>电堆效率(%)：</span><span id="stackEfficiency"></span></div>
+                        <div class="result-item" title="电堆电流(A) = 反应面积(cm²) * 电流密度(A/cm²)" data-formula-key="formulaStackCurrent"><span>电堆电流(A)：</span><span id="stackCurrent"></span></div>
+                        <div class="result-item" title="电堆电压(V) = 单电池电压(V) * 电堆节数" data-formula-key="formulaStackVoltage"><span data-i18n="stackVoltage">电堆电压(V)：</span><span id="stackVoltage"></span></div>
+                        <div class="result-item" title="电堆功率(kW) = (电堆电流 * 电堆电压) / 1000" data-formula-key="formulaStackPower"><span data-i18n="stackPower">电堆功率(kW)：</span><span id="stackPower"></span></div>
+                        <div class="result-item" title="理论反应消耗氢气量(mol/s) = (反应面积 * 电流密度 * 电堆节数) / (96485 * 2)" data-formula-key="formulaTheoreticalHydrogenConsumption"><span data-i18n="theoreticalHydrogenConsumption">理论反应消耗氢气量(mol/s)：</span><span id="theoreticalHydrogenConsumption"></span></div>
+                        <div class="result-item" title="理论反应消耗氧气量(mol/s) = 理论反应消耗氢气量 / 2" data-formula-key="formulaTheoreticalOxygenConsumption"><span data-i18n="theoreticalOxygenConsumption">理论反应消耗氧气量(mol/s)：</span><span id="theoreticalOxygenConsumption"></span></div>
+                        <div class="result-item" title="理论反应产水量(mol/s) = 理论反应消耗氢气量" data-formula-key="formulaTheoreticalWaterProduction"><span data-i18n="theoreticalWaterProduction">理论反应产水量(mol/s)：</span><span id="theoreticalWaterProduction"></span></div>
+                        <div class="result-item" title="实际入口H2流量(mol/s) = 理论反应消耗氢气量 * 氢气计量比" data-formula-key="formulaActualHydrogenFlow"><span data-i18n="actualHydrogenFlow">实际入口H2流量(mol/s)：</span><span id="actualHydrogenFlow"></span></div>
+                        <div class="result-item" title="实际入口Air流量(mol/s) = (理论反应消耗氢气量 / 2) * 空气计量比 / 0.21" data-formula-key="formulaActualAirFlow"><span data-i18n="actualAirFlow">实际入口Air流量(mol/s)：</span><span id="actualAirFlow"></span></div>
+                        <div class="result-item" title="实际入口H2流量(NLPM) = 实际入口H2流量(mol/s) * 22.4 * 60" data-formula-key="formulaActualHydrogenFlowNLPM"><span data-i18n="actualHydrogenFlowNLPM">实际入口H2流量(NLPM)：</span><span id="actualHydrogenFlowNLPM"></span></div>
+                        <div class="result-item" title="实际入口Air流量(NLPM) = 实际入口Air流量(mol/s) * 22.4 * 60" data-formula-key="formulaActualAirFlowNLPM"><span data-i18n="actualAirFlowNLPM">实际入口Air流量(NLPM)：</span><span id="actualAirFlowNLPM"></span></div>
+                        <div class="result-item" title="反应产热量(LHV-kW) = 电堆功率 * (1.254 - 单电池电压) / 单电池电压" data-formula-key="formulaReactionHeat"><span data-i18n="reactionHeat">反应产热量(LHV-kW)：</span><span id="reactionHeat"></span></div>
+                        <div class="result-item" title="电堆效率(%) = (单电池电压 / 1.254) * 100" data-formula-key="formulaStackEfficiency"><span data-i18n="stackEfficiency">电堆效率(%)：</span><span id="stackEfficiency"></span></div>
                     </div>
                     
                     <div class="result-section">
                         <h3>氢气子系统</h3>
-                        <div class="result-item" title="系统消耗氢气量(mol/s) = 理论反应消耗氢气量 * 100 / 氢气利用率"><span>系统消耗氢气量(mol/s)：</span><span id="systemHydrogenConsumption"></span></div>
-                        <div class="result-item" title="系统供氢量(NLPM) = 系统消耗氢气量 * 22.4 * 60"><span>系统供氢量(NLPM)：</span><span id="systemHydrogenSupplyNLPM"></span></div>
-                        <div class="result-item" title="氢气尾气排气(NLPM) = 系统供氢量 * (1 - 氢气利用率/100)"><span>氢气尾气排气(NLPM)：</span><span id="hydrogenExhaust"></span></div>
-                        <div class="result-item" title="出口氢气循环量(mol/s) = 理论反应消耗氢气量 * (氢气过量比 - 1)"><span>出口氢气循环量(mol/s)：</span><span id="hydrogenRecirculation"></span></div>
-                        <div class="result-item" title="出口氢气循环量(NLPM) = 出口氢气循环量(mol/s) * 22.4 * 60"><span>出口氢气循环量(NLPM)：</span><span id="hydrogenRecirculationNLPM"></span></div>
-                        <div class="result-item" title="阳极出口总水量(mol/s) = 理论反应消耗氢气量 * 水分布系数 + 进入电堆水量"><span>阳极出口总水量(mol/s)：</span><span id="anodeOutletWater"></span></div>
-                        <div class="result-item" title="阳极出口温度(℃) = 操作温度"><span>阳极出口温度(℃)：</span><span id="anodeOutletTemp"></span></div>
-                        <div class="result-item" title="对应的饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为温度）"><span>对应的饱和蒸汽压(kPa)：</span><span id="saturatedVaporPressure"></span></div>
-                        <div class="result-item" title="阳极出口压力(kPa) = 阳极入口压力 - 阳极压损"><span>阳极出口压力(kPa)：</span><span id="anodeOutletPressure"></span></div>
-                        <div class="result-item" title="阳极出口相对湿度(%) = 阳极出口压力*(阳极出口总水量/(阳极出口总水量+氢气循环量))/饱和蒸汽压*100"><span>阳极出口相对湿度(%)：</span><span id="anodeOutletHumidity"></span></div>
-                        <div class="result-item" title="阳极出口液态水量(mol/s) = 当相对湿度>100时，阳极出口总水量 - 氢气循环量*饱和蒸汽压/(阳极出口压力-饱和蒸汽压)，否则为0"><span>阳极出口液态水量(mol/s)：</span><span id="anodeLiquidWater"></span></div>
-                        <div class="result-item" title="阳极冷凝水放热(kW) = 阳极出口液态水量*18*2258/1000（18是水的摩尔质量，2258是汽化潜热）"><span>阳极冷凝水放热(kW)：</span><span id="anodeCondensationHeat"></span></div>
-                        <div class="result-item" title="出口气态水量(mol/s) = 阳极出口总水量 - 阳极出口液态水量"><span>出口气态水量(mol/s)：</span><span id="outletGaseousWater"></span></div>
-                        <div class="result-item" title="阳极入口氢气温度(℃) = 阳极入口温度"><span>阳极入口氢气温度(℃)：</span><span id="anodeInletHydrogenTemp"></span></div>
-                        <div class="result-item" title="对应的饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为温度）"><span>对应的饱和蒸汽压(kPa)：</span><span id="saturatedVaporPressure1"></span></div>
-                        <div class="result-item" title="入堆氢气相对湿度(%) = 出口气态水量/(出口气态水量+系统供氢量+氢气循环量)*阳极入口压力/饱和蒸汽压*100"><span>入堆氢气相对湿度(%)：</span><span id="inletHydrogenHumidity"></span></div>
-                        <div class="result-item" title="进入电堆水量(mol/s) = 阳极出口液态水量*(1-气液分离器效率/100) + 出口气态水量"><span>进入电堆水量(mol/s)：</span><span id="inletStackWater"></span></div>
-                        <div class="result-item" title="水分布系数(阳极) = 水分布系数设置值"><span>水分布系数(阳极)：</span><span id="waterDistributionCoefficient"></span></div>
+                        <div class="result-item" title="系统消耗氢气量(mol/s) = 理论反应消耗氢气量 * 100 / 氢气利用率" data-formula-key="formulaSystemHydrogenConsumption"><span data-i18n="systemHydrogenConsumption">系统消耗氢气量(mol/s)：</span><span id="systemHydrogenConsumption"></span></div>
+                        <div class="result-item" title="系统供氢量(NLPM) = 系统消耗氢气量 * 22.4 * 60" data-formula-key="formulaSystemHydrogenSupplyNLPM"><span data-i18n="systemHydrogenSupplyNLPM">系统供氢量(NLPM)：</span><span id="systemHydrogenSupplyNLPM"></span></div>
+                        <div class="result-item" title="氢气尾气排气(NLPM) = 系统供氢量 * (1 - 氢气利用率/100)" data-formula-key="formulaHydrogenExhaust"><span data-i18n="hydrogenExhaust">氢气尾气排气(NLPM)：</span><span id="hydrogenExhaust"></span></div>
+                        <div class="result-item" title="出口氢气循环量(mol/s) = 理论反应消耗氢气量 * (氢气过量比 - 1)" data-formula-key="formulaHydrogenRecirculation"><span data-i18n="hydrogenRecirculation">出口氢气循环量(mol/s)：</span><span id="hydrogenRecirculation"></span></div>
+                        <div class="result-item" title="出口氢气循环量(NLPM) = 出口氢气循环量(mol/s) * 22.4 * 60" data-formula-key="formulaHydrogenRecirculationNLPM"><span data-i18n="hydrogenRecirculationNLPM">出口氢气循环量(NLPM)：</span><span id="hydrogenRecirculationNLPM"></span></div>
+                        <div class="result-item" title="阳极出口总水量(mol/s) = 理论反应消耗氢气量 * 水分布系数 + 进入电堆水量" data-formula-key="formulaAnodeOutletWater"><span data-i18n="anodeOutletWater">阳极出口总水量(mol/s)：</span><span id="anodeOutletWater"></span></div>
+                        <div class="result-item" title="阳极出口温度(℃) = 操作温度" data-formula-key="formulaAnodeOutletTemp"><span data-i18n="anodeOutletTemp">阳极出口温度(℃)：</span><span id="anodeOutletTemp"></span></div>
+                        <div class="result-item" title="对应的饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为温度）" data-formula-key="formulaSaturatedVaporPressure"><span data-i18n="saturatedVaporPressure">对应的饱和蒸汽压(kPa)：</span><span id="saturatedVaporPressure"></span></div>
+                        <div class="result-item" title="阳极出口压力(kPa) = 阳极入口压力 - 阳极压损" data-formula-key="formulaAnodeOutletPressure"><span data-i18n="anodeOutletPressure">阳极出口压力(kPa)：</span><span id="anodeOutletPressure"></span></div>
+                        <div class="result-item" title="阳极出口相对湿度(%) = 阳极出口压力*(阳极出口总水量/(阳极出口总水量+氢气循环量))/饱和蒸汽压*100" data-formula-key="formulaAnodeOutletHumidity"><span data-i18n="anodeOutletHumidity">阳极出口相对湿度(%)：</span><span id="anodeOutletHumidity"></span></div>
+                        <div class="result-item" title="阳极出口液态水量(mol/s) = 当相对湿度>100时，阳极出口总水量 - 氢气循环量*饱和蒸汽压/(阳极出口压力-饱和蒸汽压)，否则为0" data-formula-key="formulaAnodeLiquidWater"><span data-i18n="anodeLiquidWater">阳极出口液态水量(mol/s)：</span><span id="anodeLiquidWater"></span></div>
+                        <div class="result-item" title="阳极冷凝水放热(kW) = 阳极出口液态水量*18*2258/1000（18是水的摩尔质量，2258是汽化潜热）" data-formula-key="formulaAnodeCondensationHeat"><span data-i18n="anodeCondensationHeat">阳极冷凝水放热(kW)：</span><span id="anodeCondensationHeat"></span></div>
+                        <div class="result-item" title="出口气态水量(mol/s) = 阳极出口总水量 - 阳极出口液态水量" data-formula-key="formulaOutletGaseousWater"><span data-i18n="outletGaseousWater">出口气态水量(mol/s)：</span><span id="outletGaseousWater"></span></div>
+                        <div class="result-item" title="阳极入口氢气温度(℃) = 阳极入口温度" data-formula-key="formulaAnodeInletHydrogenTemp"><span data-i18n="anodeInletHydrogenTemp">阳极入口氢气温度(℃)：</span><span id="anodeInletHydrogenTemp"></span></div>
+                        <div class="result-item" title="对应的饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为温度）" data-formula-key="formulaSaturatedVaporPressure1"><span data-i18n="saturatedVaporPressure1">对应的饱和蒸汽压(kPa)：</span><span id="saturatedVaporPressure1"></span></div>
+                        <div class="result-item" title="入堆氢气相对湿度(%) = 出口气态水量/(出口气态水量+系统供氢量+氢气循环量)*阳极入口压力/饱和蒸汽压*100" data-formula-key="formulaInletHydrogenHumidity"><span data-i18n="inletHydrogenHumidity">入堆氢气相对湿度(%)：</span><span id="inletHydrogenHumidity"></span></div>
+                        <div class="result-item" title="进入电堆水量(mol/s) = 阳极出口液态水量*(1-气液分离器效率/100) + 出口气态水量" data-formula-key="formulaInletStackWater"><span data-i18n="inletStackWater">进入电堆水量(mol/s)：</span><span id="inletStackWater"></span></div>
+                        <div class="result-item" title="水分布系数(阳极) = 水分布系数设置值" data-formula-key="formulaWaterDistributionCoefficient"><span data-i18n="waterDistributionCoefficient">水分布系数(阳极)：</span><span id="waterDistributionCoefficient"></span></div>
                     </div>
                     
                     <div class="result-section">
                         <h3>空气子系统</h3>
-                        <div class="result-item" title="系统供空气量(mol/s) = 实际入口Air流量(mol/s)"><span>系统供空气量(mol/s)：</span><span id="systemAirSupply"></span></div>
-                        <div class="result-item" title="系统供空气量(NLPM) = 实际入口Air流量(NLPM)"><span>系统供空气量(NLPM)：</span><span id="systemAirSupplyNLPM"></span></div>
-                        <div class="result-item" title="空气泵入口温度(℃) = 环境温度"><span>空气泵入口温度(℃)：</span><span id="airPumpInletTemp"></span></div>
-                        <div class="result-item" title="出口空气流量(mol/s) = 实际入口Air流量 - 理论氢气消耗/2"><span>出口空气流量(mol/s)：</span><span id="outletAirFlow"></span></div>
-                        <div class="result-item" title="出口空气流量(NLPM) = 出口空气流量*22.4*60"><span>出口空气流量(NLPM)：</span><span id="outletAirFlowNLPM"></span></div>
-                        <div class="result-item" title="阴极出口总水量(mol/s) = 理论产水量*(1-水分布系数) + 从环境中带入水分 + 干气加湿用水量"><span>阴极出口总水量(mol/s)：<span title="系统有加湿器需要将环境湿度(%)设为0" style="cursor: help; margin-left: 5px;">?</span></span><span id="cathodeOutletWater"></span></div>
-                        <div class="result-item" title="阴极出口温度(℃) = 操作温度"><span>阴极出口温度(℃)：</span><span id="cathodeOutletTemp"></span></div>
-                        <div class="result-item" title="对应的饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为温度）"><span>对应的饱和蒸汽压(kPa)：</span><span id="saturatedVaporPressure2"></span></div>
-                        <div class="result-item" title="阴极出口压力(kPa) = 阴极入口压力 - 阴极压损"><span>阴极出口压力(kPa)：</span><span id="cathodeOutletPressure"></span></div>
-                        <div class="result-item" title="空气出口相对湿度(%) = 阴极出口压力*(阴极出口总水量/(阴极出口总水量+出口空气流量))/对应的饱和蒸汽压*100"><span>空气出口相对湿度(%)：</span><span id="airOutletHumidity"></span></div>
-                        <div class="result-item" title="出口液态水量(mol/s) = 当相对湿度>100时，阴极出口总水量 - 出口空气流量*饱和蒸汽压/(阴极出口压力-饱和蒸汽压)，否则为0"><span>出口液态水量(mol/s)：</span><span id="outletLiquidWater"></span></div>
-                        <div class="result-item" title="冷凝水放热(kW) = 出口液态水量*18*2258/1000（18是水的摩尔质量，2258是汽化潜热）"><span>冷凝水放热(kW)：</span><span id="condensationHeat"></span></div>
-                        <div class="result-item" title="出口水蒸气分压(理论值)(kPa) = 阴极出口压力*(阴极出口总水量/(阴极出口总水量+出口空气流量))"><span>出口水蒸气分压(理论值)(kPa)：</span><span id="outletWaterVaporPressure"></span></div>
-                        <div class="result-item" title="出口水蒸气分压(实际值)(kPa) = 当相对湿度>100时为饱和蒸汽压，否则为理论值"><span>出口水蒸气分压(实际值)(kPa)：</span><span id="outletWaterVaporPressure1"></span></div>
-                        <div class="result-item" title="出口露点温度(℃) = 1657.46/(7.07406-log10(出口水蒸气分压)) - 227.02"><span>出口露点温度(℃)：</span><span id="outletDewPointTemp"></span></div>
-                        <div class="result-item" title="中冷器出口温度(℃) = 操作温度 - 温度差/2"><span>中冷器出口温度(℃)：</span><span id="intercoolerOutletTemp"></span></div>
-                        <div class="result-item" title="环境饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为环境温度）"><span>环境饱和蒸汽压(kPa)：</span><span id="ambientSaturatedVaporPressure"></span></div>
-                        <div class="result-item" title="从环境中带入水分(mol/s) = 湿度*环境饱和蒸汽压*实际入口Air流量/101/100"><span>从环境中带入水分(mol/s)：</span><span id="ambientWaterIntake"></span></div>
+                        <div class="result-item" title="系统供空气量(mol/s) = 实际入口Air流量(mol/s)" data-formula-key="formulaSystemAirSupply"><span data-i18n="systemAirSupply">系统供空气量(mol/s)：</span><span id="systemAirSupply"></span></div>
+                        <div class="result-item" title="系统供空气量(NLPM) = 实际入口Air流量(NLPM)" data-formula-key="formulaSystemAirSupplyNLPM"><span data-i18n="systemAirSupplyNLPM">系统供空气量(NLPM)：</span><span id="systemAirSupplyNLPM"></span></div>
+                        <div class="result-item" title="空气泵入口温度(℃) = 环境温度" data-formula-key="formulaAirPumpInletTemp"><span data-i18n="airPumpInletTemp">空气泵入口温度(℃)：</span><span id="airPumpInletTemp"></span></div>
+                        <div class="result-item" title="出口空气流量(mol/s) = 实际入口Air流量 - 理论氢气消耗/2" data-formula-key="formulaOutletAirFlow"><span data-i18n="outletAirFlow">出口空气流量(mol/s)：</span><span id="outletAirFlow"></span></div>
+                        <div class="result-item" title="出口空气流量(NLPM) = 出口空气流量*22.4*60" data-formula-key="formulaOutletAirFlowNLPM"><span data-i18n="outletAirFlowNLPM">出口空气流量(NLPM)：</span><span id="outletAirFlowNLPM"></span></div>
+                        <div class="result-item" title="阴极出口总水量(mol/s) = 理论产水量*(1-水分布系数) + 从环境中带入水分 + 干气加湿用水量" data-formula-key="formulaCathodeOutletWater"><span data-i18n="cathodeOutletWater">阴极出口总水量(mol/s)：</span><span id="cathodeOutletWaterTooltip" data-i18n-title="cathodeOutletWaterTooltip" title="系统有加湿器需要将环境湿度(%)设为0">ⓘ</span><span id="cathodeOutletWater"></span></div>
+                        <div class="result-item" title="阴极出口温度(℃) = 操作温度" data-formula-key="formulaCathodeOutletTemp"><span data-i18n="cathodeOutletTemp">阴极出口温度(℃)：</span><span id="cathodeOutletTemp"></span></div>
+                        <div class="result-item" title="对应的饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为温度）" data-formula-key="formulaSaturatedVaporPressure2"><span data-i18n="saturatedVaporPressure2">对应的饱和蒸汽压(kPa)：</span><span id="saturatedVaporPressure2"></span></div>
+                        <div class="result-item" title="阴极出口压力(kPa) = 阴极入口压力 - 阴极压损" data-formula-key="formulaCathodeOutletPressure"><span data-i18n="cathodeOutletPressure">阴极出口压力(kPa)：</span><span id="cathodeOutletPressure"></span></div>
+                        <div class="result-item" title="空气出口相对湿度(%) = 阴极出口压力*(阴极出口总水量/(阴极出口总水量+出口空气流量))/对应的饱和蒸汽压*100" data-formula-key="formulaAirOutletHumidity"><span data-i18n="airOutletHumidity">空气出口相对湿度(%)：</span><span id="airOutletHumidity"></span></div>
+                        <div class="result-item" title="出口液态水量(mol/s) = 当相对湿度>100时，阴极出口总水量 - 出口空气流量*饱和蒸汽压/(阴极出口压力-饱和蒸汽压)，否则为0" data-formula-key="formulaOutletLiquidWater"><span data-i18n="outletLiquidWater">出口液态水量(mol/s)：</span><span id="outletLiquidWater"></span></div>
+                        <div class="result-item" title="冷凝水放热(kW) = 出口液态水量*18*2258/1000（18是水的摩尔质量，2258是汽化潜热）" data-formula-key="formulaCondensationHeat"><span data-i18n="condensationHeat">冷凝水放热(kW)：</span><span id="condensationHeat"></span></div>
+                        <div class="result-item" title="出口水蒸气分压(理论值)(kPa) = 阴极出口压力*(阴极出口总水量/(阴极出口总水量+出口空气流量))" data-formula-key="formulaOutletWaterVaporPressure"><span data-i18n="outletWaterVaporPressure">出口水蒸气分压(理论值)(kPa)：</span><span id="outletWaterVaporPressure"></span></div>
+                        <div class="result-item" title="出口水蒸气分压(实际值)(kPa) = 当相对湿度>100时为饱和蒸汽压，否则为理论值" data-formula-key="formulaOutletWaterVaporPressure1"><span data-i18n="outletWaterVaporPressure1">出口水蒸气分压(实际值)(kPa)：</span><span id="outletWaterVaporPressure1"></span></div>
+                        <div class="result-item" title="出口露点温度(℃) = 1657.46/(7.07406-log10(出口水蒸气分压)) - 227.02" data-formula-key="formulaOutletDewPointTemp"><span data-i18n="outletDewPointTemp">出口露点温度(℃)：</span><span id="outletDewPointTemp"></span></div>
+                        <div class="result-item" title="中冷器出口温度(℃) = 操作温度 - 温度差/2" data-formula-key="formulaIntercoolerOutletTemp"><span data-i18n="intercoolerOutletTemp">中冷器出口温度(℃)：</span><span id="intercoolerOutletTemp"></span></div>
+                        <div class="result-item" title="环境饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为环境温度）" data-formula-key="formulaAmbientSaturatedVaporPressure"><span data-i18n="ambientSaturatedVaporPressure">环境饱和蒸汽压(kPa)：</span><span id="ambientSaturatedVaporPressure"></span></div>
+                        <div class="result-item" title="从环境中带入水分(mol/s) = 湿度*环境饱和蒸汽压*实际入口Air流量/101/100" data-formula-key="formulaAmbientWaterIntake"><span data-i18n="ambientWaterIntake">从环境中带入水分(mol/s)：</span><span id="ambientWaterIntake"></span></div>
                     </div>
                     
                     <div class="result-section">
                         <h3>换热子系统</h3>
-                        <div class="result-item" title="冷却液密度(kg/m3) = 乙二醇占比*1.7657 + 981.43（乙二醇溶液）"><span>冷却液密度(kg/m3)：</span><span id="coolantDensity"></span></div>
-                        <div class="result-item" title="冷却液比热(kJ/(kg·K)) = -0.0002*乙二醇占比^2 - 0.004*乙二醇占比 + 4.2"><span>冷却液比热(kJ/(kg·K))：</span><span id="coolantSpecificHeat"></span></div>
-                        <div class="result-item" title="反应产热量(LHV-kW) = 电堆功率*(1.254-单电池电压)/单电池电压"><span>反应产热量(LHV-kW)：</span><span id="reactionHeat1"></span></div>
-                        <div class="result-item" title="过饱和水冷凝放热量(kW) = 冷凝水放热 + 阳极冷凝水放热"><span>过饱和水冷凝放热量(kW)：</span><span id="superSaturatedWaterCondensationHeat"></span></div>
-                        <div class="result-item" title="中冷器热负荷(kW) = 1.005*(系统供空气量*28.96/1000)*(空压机出口温度-中冷器出口温度)"><span>中冷器热负荷(kW)：</span><span id="intercoolerHeatLoad"></span></div>
-                        <div class="result-item" title="系统总热负荷(kW) = 中冷器热负荷 + 过饱和水冷凝放热量 + 反应产热量"><span>系统总热负荷(kW)：</span><span id="systemTotalHeatLoad"></span></div>
-                        <div class="result-item" title="系统冷却液流量(L/min) = 系统总热负荷/温度差/冷却液密度/冷却液比热*1000*60"><span>系统冷却液流量(L/min)：</span><span id="stackCoolantFlow"></span></div>
+                        <div class="result-item" title="冷却液密度(kg/m3) = 乙二醇占比*1.7657 + 981.43（乙二醇溶液）" data-formula-key="formulaCoolantDensity"><span data-i18n="coolantDensity">冷却液密度(kg/m3)：</span><span id="coolantDensity"></span></div>
+                        <div class="result-item" title="冷却液比热(kJ/(kg·K)) = -0.0002*乙二醇占比^2 - 0.004*乙二醇占比 + 4.2" data-formula-key="formulaCoolantSpecificHeat"><span data-i18n="coolantSpecificHeat">冷却液比热(kJ/(kg·K))：</span><span id="coolantSpecificHeat"></span></div>
+                        <div class="result-item" title="反应产热量(LHV-kW) = 电堆功率*(1.254-单电池电压)/单电池电压" data-formula-key="formulaReactionHeat1"><span data-i18n="reactionHeat1">反应产热量(LHV-kW)：</span><span id="reactionHeat1"></span></div>
+                        <div class="result-item" title="过饱和水冷凝放热量(kW) = 冷凝水放热 + 阳极冷凝水放热" data-formula-key="formulaSuperSaturatedWaterCondensationHeat"><span data-i18n="superSaturatedWaterCondensationHeat">过饱和水冷凝放热量(kW)：</span><span id="superSaturatedWaterCondensationHeat"></span></div>
+                        <div class="result-item" title="中冷器热负荷(kW) = 1.005*(系统供空气量*28.96/1000)*(空压机出口温度-中冷器出口温度)" data-formula-key="formulaIntercoolerHeatLoad"><span data-i18n="intercoolerHeatLoad">中冷器热负荷(kW)：</span><span id="intercoolerHeatLoad"></span></div>
+                        <div class="result-item" title="系统总热负荷(kW) = 中冷器热负荷 + 过饱和水冷凝放热量 + 反应产热量" data-formula-key="formulaSystemTotalHeatLoad"><span data-i18n="systemTotalHeatLoad">系统总热负荷(kW)：</span><span id="systemTotalHeatLoad"></span></div>
+                        <div class="result-item" title="系统冷却液流量(L/min) = 系统总热负荷/温度差/冷却液密度/冷却液比热*1000*60" data-formula-key="formulaStackCoolantFlow"><span data-i18n="stackCoolantFlow">系统冷却液流量(L/min)：</span><span id="stackCoolantFlow"></span></div>
                         
-                        <h3 style="margin-top: 0px;">COG加湿器</h3>
-                        <div class="result-item" title="干气加湿用水量(mol/s) = (阴极出口总水量 - 出口液态水量)*加湿器效率/100"><span>干气加湿用水量(mol/s)：</span><span id="dryGasHumidificationWater"></span></div>
-                        <div class="result-item" title="干侧出口压力(kPa) = 阴极入口压力"><span>干侧出口压力(kPa)：</span><span id="humidifierDrySidePressure"></span></div>
-                        <div class="result-item" title="干侧出口温度(℃) = (中冷器出口温度 + 操作温度 - 温度差)/2"><span>干侧出口温度(℃)：</span><span id="humidifierDrySideTemp"></span></div>
-                        <div class="result-item" title="干侧出口饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为温度）"><span>干侧出口饱和蒸汽压(kPa)：</span><span id="humidifierDrySideSaturatedVaporPressure"></span></div>
-                        <div class="result-item" title="干侧出口相对湿度(%) = 干气加湿用水量/实际入口Air流量*加湿器干侧出口压力/干侧出口饱和蒸汽压*100"><span>干侧出口相对湿度(%)：</span><span id="humidifierDrySideHumidity"></span></div>
-                        <div class="result-item" title="湿侧出口压力(kPa) = 阴极出口压力 - 加湿器湿侧压力损失"><span>湿侧出口压力(kPa)：</span><span id="humidifierWetSidePressure"></span></div>
-                        <div class="result-item" title="湿侧出口温度(℃) = 加湿器干侧出口温度"><span>湿侧出口温度(℃)：</span><span id="humidifierWetSideTemp"></span></div>
-                        <div class="result-item" title="湿侧出口水量(mol/s) = 阴极出口总水量 - 出口液态水量 - 干气加湿用水量"><span>湿侧出口水量(mol/s)：</span><span id="humidifierWetSideWater"></span></div>
-                        <div class="result-item" title="湿侧出口饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为温度）"><span>湿侧出口饱和蒸汽压(kPa)：</span><span id="humidifierWetSideSaturatedVaporPressure"></span></div>
-                        <div class="result-item" title="湿侧出口相对湿度(%) = 湿侧出口水量/出口空气流量*湿侧出口压力/湿侧出口饱和蒸汽压*100"><span>湿侧出口相对湿度(%)：</span><span id="humidifierWetSideHumidity"></span></div>
+                        <h3 style="margin-top: 0px;" data-i18n="cogHumidifier">COG加湿器</h3>
+                        <div class="result-item" title="干气加湿用水量(mol/s) = (阴极出口总水量 - 出口液态水量)*加湿器效率/100" data-formula-key="formulaDryGasHumidificationWater"><span data-i18n="dryGasHumidificationWater">干气加湿用水量(mol/s)：</span><span id="dryGasHumidificationWater"></span></div>
+                        <div class="result-item" title="干侧出口压力(kPa) = 阴极入口压力" data-formula-key="formulaHumidifierDrySidePressure"><span data-i18n="humidifierDrySidePressure">干侧出口压力(kPa)：</span><span id="humidifierDrySidePressure"></span></div>
+                        <div class="result-item" title="干侧出口温度(℃) = (中冷器出口温度 + 操作温度 - 温度差)/2" data-formula-key="formulaHumidifierDrySideTemp"><span data-i18n="humidifierDrySideTemp">干侧出口温度(℃)：</span><span id="humidifierDrySideTemp"></span></div>
+                        <div class="result-item" title="干侧出口饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为温度）" data-formula-key="formulaHumidifierDrySideSaturatedVaporPressure"><span data-i18n="humidifierDrySideSaturatedVaporPressure">干侧出口饱和蒸汽压(kPa)：</span><span id="humidifierDrySideSaturatedVaporPressure"></span></div>
+                        <div class="result-item" title="干侧出口相对湿度(%) = 干气加湿用水量/实际入口Air流量*加湿器干侧出口压力/干侧出口饱和蒸汽压*100" data-formula-key="formulaHumidifierDrySideHumidity"><span data-i18n="humidifierDrySideHumidity">干侧出口相对湿度(%)：</span><span id="humidifierDrySideHumidity"></span></div>
+                        <div class="result-item" title="湿侧出口压力(kPa) = 阴极出口压力 - 加湿器湿侧压力损失" data-formula-key="formulaHumidifierWetSidePressure"><span data-i18n="humidifierWetSidePressure">湿侧出口压力(kPa)：</span><span id="humidifierWetSidePressure"></span></div>
+                        <div class="result-item" title="湿侧出口温度(℃) = 加湿器干侧出口温度" data-formula-key="formulaHumidifierWetSideTemp"><span data-i18n="humidifierWetSideTemp">湿侧出口温度(℃)：</span><span id="humidifierWetSideTemp"></span></div>
+                        <div class="result-item" title="湿侧出口水量(mol/s) = 阴极出口总水量 - 出口液态水量 - 干气加湿用水量" data-formula-key="formulaHumidifierWetSideWater"><span data-i18n="humidifierWetSideWater">湿侧出口水量(mol/s)：</span><span id="humidifierWetSideWater"></span></div>
+                        <div class="result-item" title="湿侧出口饱和蒸汽压(kPa) = 0.00000097*T^4 - 0.00003455*T^3 + 0.00371504*T^2 + 0.01245629*T + 0.71004367（T为温度）" data-formula-key="formulaHumidifierWetSideSaturatedVaporPressure"><span data-i18n="humidifierWetSideSaturatedVaporPressure">湿侧出口饱和蒸汽压(kPa)：</span><span id="humidifierWetSideSaturatedVaporPressure"></span></div>
+                        <div class="result-item" title="湿侧出口相对湿度(%) = 湿侧出口水量/出口空气流量*湿侧出口压力/湿侧出口饱和蒸汽压*100" data-formula-key="formulaHumidifierWetSideHumidity"><span data-i18n="humidifierWetSideHumidity">湿侧出口相对湿度(%)：</span><span id="humidifierWetSideHumidity"></span></div>
                     </div>
                     
                     
@@ -289,29 +305,29 @@
             <!-- 动态性能（beta）页 -->
             <div class="tab-content" id="dynamic-performance">
                 <div class="section">
-                    <h2>动态性能分析（beta）</h2>
+                    <h2 data-i18n="dynamicPerformanceTitle">动态性能分析（beta）</h2>
                     
                     <!-- Excel数据粘贴区 -->
                     <div class="paste-section">
                         <div class="paste-header">
-                            <div class="header-cell">电流密度(A/cm²)</div>
-                            <div class="header-cell">节电压(V)</div>
-                            <div class="header-cell">氢气计量比</div>
-                            <div class="header-cell">空气计量比</div>
-                            <div class="header-cell">阳极入压力(kPa)</div>
-                            <div class="header-cell">阴极入压力(kPa)</div>
-                            <div class="header-cell">操作温差(℃)</div>
+                            <div class="header-cell" data-i18n="currentDensityHeader">电流密度(A/cm²)</div>
+                            <div class="header-cell" data-i18n="cellVoltageHeader">节电压(V)</div>
+                            <div class="header-cell" data-i18n="hydrogenRatioHeader">氢气计量比</div>
+                            <div class="header-cell" data-i18n="airRatioHeader">空气计量比</div>
+                            <div class="header-cell" data-i18n="anodeInletPressureHeader">阳极入压力(kPa)</div>
+                            <div class="header-cell" data-i18n="cathodeInletPressureHeader">阴极入压力(kPa)</div>
+                            <div class="header-cell" data-i18n="operatingTempDiffHeader">操作温差(℃)</div>
                         </div>
-                        <textarea id="dataPasteArea" placeholder="请从Excel中复制数据并粘贴到此处（每行一个数据对，用制表符或空格分隔）" rows="10"></textarea>
+                        <textarea id="dataPasteArea" data-i18n-placeholder="dataPasteAreaPlaceholder" placeholder="请从Excel中复制数据并粘贴到此处（每行一个数据对，用制表符或空格分隔）" rows="10"></textarea>
                         <div class="button-group">
-                            <button id="processDataButton" class="process-button">处理数据</button>
-                            <button id="clearDataButton" class="process-button">清空数据</button>
+                            <button id="processDataButton" class="process-button" data-i18n="processDataButton">处理数据</button>
+                            <button id="clearDataButton" class="process-button" data-i18n="clearDataButton">清空数据</button>
                         </div>
                     </div>
                     
                     <!-- 数据可视化区域 -->
                     <div class="visualization-section">
-                        <h3>动态性能曲线</h3>
+                        <h3 data-i18n="dynamicPerformanceChart">动态性能曲线</h3>
                         <div class="chart-container">
                             <canvas id="performanceChart"></canvas>
                         </div>
@@ -319,7 +335,7 @@
                         <!-- 可移动的数据条 -->
                         <div class="slider-container">
                             <input type="range" id="dataSlider" min="0" max="100" value="0" class="data-slider">
-                            <div id="sliderValueDisplay" class="slider-value">当前位置: 0</div>
+                            <div id="sliderValueDisplay" class="slider-value" data-i18n="currentPosition">当前位置: 0</div>
                         </div>
                     </div>
                 </div>
@@ -328,26 +344,26 @@
             <!-- 第二页：空气热力计算 -->
             <div class="tab-content" id="air-thermal">
                 <div class="section">
-                    <h2>空气热力计算参数</h2>
+                    <h2 data-i18n="airThermalTitle">空气热力计算参数</h2>
                     <div class="input-grid">
                         <div class="input-group">
-                            <label for="airGasConstant">空气气体常数 J/(kg*K):</label>
+                            <label for="airGasConstant" data-i18n="airGasConstant">空气气体常数 J/(kg*K):</label>
                             <input type="number" id="airGasConstant" value="287.1" step="0.1">
                         </div>
                         <div class="input-group">
-                            <label for="airSpecificHeat">空气定压比热kJ/(kg·K):</label>
+                            <label for="airSpecificHeat" data-i18n="airSpecificHeat">空气定压比热kJ/(kg·K):</label>
                             <input type="number" id="airSpecificHeat" value="1.005" step="0.001">
                         </div>
                         <div class="input-group">
-                            <label for="airSpecificHeatRatio">空气比热比(κ):</label>
+                            <label for="airSpecificHeatRatio" data-i18n="airSpecificHeatRatio">空气比热比(κ):</label>
                             <input type="number" id="airSpecificHeatRatio" value="1.4" step="0.01">
                         </div>
                         <div class="input-group">
-                            <label for="altitude">所在地海拔(m):</label>
+                            <label for="altitude" data-i18n="altitude">所在地海拔(m):</label>
                             <input type="number" id="altitude" value="500" step="10">
                         </div>
                         <div class="input-group">
-                            <label for="airPumpEfficiency">空气泵效率(%):</label>
+                            <label for="airPumpEfficiency" data-i18n="airPumpEfficiency">空气泵效率(%):</label>
                             <input type="number" id="airPumpEfficiency" value="76" step="1">
                         </div>
                     </div>
@@ -355,24 +371,24 @@
                 
                 <div class="results-container">
                     <div class="result-section">
-                        <h3>空气热力计算结果</h3>
-                        <div class="result-item" title="在高度h上的压力(Pa) = 当altitude>11000m时，22631.8*exp((11000-altitude)/6340)；否则，101325*(1-altitude/44330)^5.25588"><span>在高度h上的压力(Pa)：</span><span id="pressureAtHeight"></span></div>
-                        <div class="result-item" title="在高度h上的密度(kg/m3) = 当altitude>11000m时，0.3639*exp((11000-altitude)/6340)；否则，1.225*(1-altitude/44330)^4.25588"><span>在高度h上的密度(kg/m3)：</span><span id="densityAtHeight"></span></div>
-                        <div class="result-item" title="在高度h上的温度(K) = 当altitude>11000m时，216.65；否则，288.15-0.0065*altitude"><span>在高度h上的温度(K)：</span><span id="temperatureKAtHeight"></span></div>
-                        <div class="result-item" title="在高度h上的温度(℃) = temperatureKAtHeight - 273.15"><span>在高度h上的温度(℃)：</span><span id="temperatureCAtHeight"></span></div>
-                        <div class="result-item" title="空气入口体积流量(m^3/s) = airFlowRate / 1000 / 60"><span>空气入口体积流量(m^3/s)：</span><span id="airInletVolumeFlow"></span></div>
-                        <div class="result-item" title="空气入口质量流量(g/s) = airInletVolumeFlow * densityAtHeight * 1000"><span>空气入口质量流量(g/s)：</span><span id="airInletMassFlow"></span></div>
-                        <div class="result-item" title="出口空气压力(Pa) = inletPressure * 100000 * (1 - intercoolerPressureLoss/100)"><span>出口空气压力(Pa)：</span><span id="outletAirPressure"></span></div>
-                        <div class="result-item" title="空压机压比(ε) = outletAirPressure / inletAirPressure"><span>空压机压比(ε)：</span><span id="compressorPressureRatio"></span></div>
-                        <div class="result-item" title="出口空气温度(K) = inletAirTemperature * (1 + ((outletAirPressure/inletAirPressure)^0.286-1)/compressorEfficiency)"><span>出口空气温度(K)：</span><span id="outletAirTempK"></span></div>
-                        <div class="result-item" title="出口空气温度(℃) = outletAirTempK - 273.15"><span>出口空气温度(℃)：</span><span id="outletAirTempC"></span></div>
-                        <div class="result-item" title="空气温升(K) = outletAirTempK - inletAirTemperature"><span>空气温升(K)：</span><span id="airTempRise"></span></div>
-                        <div class="result-item" title="定熵压缩轴功(W) = k/(k-1)*p1*V1*[1-(p2/p1)^((k-1)/k)]"><span>定熵压缩轴功(W)：</span><span id="isentropicCompressionWork"></span></div>
-                        <div class="result-item" title="空压机功耗(W) = 空气入口质量流量 × 空气定压比热 × 空气温升"><span>空压机功耗(W)：</span><span id="compressorPowerConsumption"></span></div>
+                        <h3 data-i18n="airThermalResults">空气热力计算结果</h3>
+                        <div class="result-item" title="在高度h上的压力(Pa) = 当altitude>11000m时，22631.8*exp((11000-altitude)/6340)；否则，101325*(1-altitude/44330)^5.25588"><span data-i18n="pressureAtHeight">在高度h上的压力(Pa)：</span><span id="pressureAtHeight"></span></div>
+                        <div class="result-item" title="在高度h上的密度(kg/m3) = 当altitude>11000m时，0.3639*exp((11000-altitude)/6340)；否则，1.225*(1-altitude/44330)^4.25588"><span data-i18n="densityAtHeight">在高度h上的密度(kg/m3)：</span><span id="densityAtHeight"></span></div>
+                        <div class="result-item" title="在高度h上的温度(K) = 当altitude>11000m时，216.65；否则，288.15-0.0065*altitude"><span data-i18n="temperatureKAtHeight">在高度h上的温度(K)：</span><span id="temperatureKAtHeight"></span></div>
+                        <div class="result-item" title="在高度h上的温度(℃) = temperatureKAtHeight - 273.15"><span data-i18n="temperatureCAtHeight">在高度h上的温度(℃)：</span><span id="temperatureCAtHeight"></span></div>
+                        <div class="result-item" title="空气入口体积流量(m^3/s) = airFlowRate / 1000 / 60"><span data-i18n="airInletVolumeFlow">空气入口体积流量(m^3/s)：</span><span id="airInletVolumeFlow"></span></div>
+                        <div class="result-item" title="空气入口质量流量(g/s) = airInletVolumeFlow * densityAtHeight * 1000"><span data-i18n="airInletMassFlow">空气入口质量流量(g/s)：</span><span id="airInletMassFlow"></span></div>
+                        <div class="result-item" title="出口空气压力(Pa) = inletPressure * 100000 * (1 - intercoolerPressureLoss/100)"><span data-i18n="outletAirPressure">出口空气压力(Pa)：</span><span id="outletAirPressure"></span></div>
+                        <div class="result-item" title="空压机压比(ε) = outletAirPressure / inletAirPressure"><span data-i18n="compressorPressureRatio">空压机压比(ε)：</span><span id="compressorPressureRatio"></span></div>
+                        <div class="result-item" title="出口空气温度(K) = inletAirTemperature * (1 + ((outletAirPressure/inletAirPressure)^0.286-1)/compressorEfficiency)"><span data-i18n="outletAirTempK">出口空气温度(K)：</span><span id="outletAirTempK"></span></div>
+                        <div class="result-item" title="出口空气温度(℃) = outletAirTempK - 273.15"><span data-i18n="outletAirTempC">出口空气温度(℃)：</span><span id="outletAirTempC"></span></div>
+                        <div class="result-item" title="空气温升(K) = outletAirTempK - inletAirTemperature"><span data-i18n="airTempRise">空气温升(K)：</span><span id="airTempRise"></span></div>
+                        <div class="result-item" title="定熵压缩轴功(W) = k/(k-1)*p1*V1*[1-(p2/p1)^((k-1)/k)]"><span data-i18n="isentropicCompressionWork">定熵压缩轴功(W)：</span><span id="isentropicCompressionWork"></span></div>
+                        <div class="result-item" title="空压机功耗(W) = 空气入口质量流量 × 空气定压比热 × 空气温升"><span data-i18n="compressorPowerConsumption">空压机功耗(W)：</span><span id="compressorPowerConsumption"></span></div>
                     </div>
                     
                     <div class="formula-section">
-                        <h3>温升、定熵压缩轴功、功耗计算公式</h3>
+                        <h3 data-i18n="airThermalFormulas">温升、定熵压缩轴功、功耗计算公式</h3>
                         <div class="formula-text">
                             <p>$$T2=T1\left(1+\frac{\left(\left(\frac{P2}{P1}\right)^{0.286}-1\right)}{\eta}\right)$$</p>
                             <p>$$Pws=\frac{\kappa}{\kappa-1}\cdot p1\cdot V1\cdot\left[1-\left(\frac{p2}{p1}\right)^{\frac{\kappa-1}{\kappa}}\right]$$</p>
@@ -382,14 +398,14 @@
                 </div>
                 
                 <div class="note">
-                    注：流量数据与第一页关联，压力为绝压，是单位为Pa。可计算海拔高度为30000米。
+                    <span data-i18n="airThermalNote">注：流量数据与第一页关联，压力为绝压，是单位为Pa。可计算海拔高度为30000米。</span>
                 </div>
                 
                 <!-- 参考文献部分 -->
                 <div class="reference">
-                    <h4>参考文献</h4>
+                    <h4 data-i18n="references">参考文献</h4>
                     <ol class="reference-list">
-                        <li>《飞行器环境控制》[M]. 北京: 北京航空航天大学出版社, 2004。</li>
+                        <li data-i18n="airThermalReference1">《飞行器环境控制》[M]. 北京: 北京航空航天大学出版社, 2004。</li>
                     </ol>
                 </div>
             </div>
@@ -397,124 +413,124 @@
             <!-- 第三页：氢气热值与度电数 -->
             <div class="tab-content" id="hydrogen-value">
                 <div class="section">
-                    <h2>氢气热值与度电数</h2>
+                    <h2 data-i18n="hydrogenValueTitle">氢气热值与度电数</h2>
                     <div class="hydrogen-value-table">
                         <div class="table-row">
-                            <div class="table-cell">1摩尔氢气低热焓值，kJ/mol（气态水）</div>
+                            <div class="table-cell" data-i18n="hydrogenLowHeatMol">1摩尔氢气低热焓值，kJ/mol（气态水）</div>
                             <div class="table-cell">241.83</div>
                         </div>
                         <div class="table-row">
-                            <div class="table-cell">1摩尔氢气高热焓值，kJ/mol（液态水）</div>
+                            <div class="table-cell" data-i18n="hydrogenHighHeatMol">1摩尔氢气高热焓值，kJ/mol（液态水）</div>
                             <div class="table-cell">285.84</div>
                         </div>
                         <div class="table-row">
-                            <div class="table-cell">1克氢气低热焓值，J/g（气态水）</div>
+                            <div class="table-cell" data-i18n="hydrogenLowHeatGram">1克氢气低热焓值，J/g（气态水）</div>
                             <div class="table-cell">120915</div>
                         </div>
                         <div class="table-row">
-                            <div class="table-cell">1克氢气高热焓值，J/g（液态水）</div>
+                            <div class="table-cell" data-i18n="hydrogenHighHeatGram">1克氢气高热焓值，J/g（液态水）</div>
                             <div class="table-cell">142920</div>
                         </div>
                         <div class="table-row">
-                            <div class="table-cell">1度电对应的能量，J</div>
+                            <div class="table-cell" data-i18n="electricityEnergy">1度电对应的能量，J</div>
                             <div class="table-cell">3600000</div>
                         </div>
                         <div class="table-row">
-                            <div class="table-cell">1kg氢气低热值对应的度电数，kWh</div>
+                            <div class="table-cell" data-i18n="hydrogenLowElectricity">1kg氢气低热值对应的度电数，kWh</div>
                             <div class="table-cell">33.59</div>
                         </div>
                         <div class="table-row">
-                            <div class="table-cell">1kg氢气高热值对应的度电数，kWh</div>
+                            <div class="table-cell" data-i18n="hydrogenHighElectricity">1kg氢气高热值对应的度电数，kWh</div>
                             <div class="table-cell">39.70</div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="explanation-section">
-                    <h3>反应焓</h3>
-                    <p>反应焓是燃料的热潜能，表示能够从燃料中提取的最大能量；其中，与燃烧相关的焓变称为燃烧焓，用符号∆Hrxn或∆hrxn（表示每摩尔反应燃烧焓）；</p>
-                    <p>以氢气燃烧为例，氢气燃烧生成水过程中对外传递的最大能量就是氢的燃烧焓</p>
+                    <h3 data-i18n="reactionEnthalpy">反应焓</h3>
+                    <p data-i18n="reactionEnthalpyDesc1">反应焓是燃料的热潜能，表示能够从燃料中提取的最大能量；其中，与燃烧相关的焓变称为燃烧焓，用符号∆Hrxn或∆hrxn（表示每摩尔反应燃烧焓）；</p>
+                    <p data-i18n="reactionEnthalpyDesc2">以氢气燃烧为例，氢气燃烧生成水过程中对外传递的最大能量就是氢的燃烧焓</p>
                     <div class="reaction-formula">
                         <p>H₂+½O₂=H₂O(g)  ∆Hrxn=-241.83KJ/mol</p>
                         <p>H₂+½O₂=H₂O(l)  ∆Hrxn=-285.84KJ/mol</p>
                     </div>
-                    <p>其中，产物为气态水的∆Hrxn是氢气燃烧的低位热值LHV,产物为液态水的∆Hrxn是氢气燃烧的高位热值HHV，LHV与HHV之间的差值是液态水的汽化潜热。</p>
+                    <p data-i18n="reactionEnthalpyDesc3">其中，产物为气态水的∆Hrxn是氢气燃烧的低位热值LHV,产物为液态水的∆Hrxn是氢气燃烧的高位热值HHV，LHV与HHV之间的差值是液态水的汽化潜热。</p>
                 </div>
             </div>
             
             <!-- 第四页：阀门流体计算 -->
             <div class="tab-content" id="valve-flow">
                 <div class="section">
-                    <h2>阀门流体计算参数</h2>
+                    <h2 data-i18n="valveFlowTitle">阀门流体计算参数</h2>
                     <div class="input-grid">
                         <div class="input-group">
-                            <label for="flowRateNLPM">流量(NLPM):</label>
+                            <label for="flowRateNLPM" data-i18n="valveFlowRate">流量(NLPM):</label>
                             <input type="number" id="flowRateNLPM" value="1400" step="1">
                         </div>
                         <div class="input-group">
-                            <label for="inletPressure">入口压力(bar.a):</label>
+                            <label for="inletPressure" data-i18n="valveInletPressure">入口压力(bar.a):</label>
                             <input type="number" id="inletPressure" value="8" step="0.1">
                         </div>
                         <div class="input-group">
-                            <label for="outletPressure">出口压力(bar.a):</label>
+                            <label for="outletPressure" data-i18n="valveOutletPressure">出口压力(bar.a):</label>
                             <input type="number" id="outletPressure" value="1" step="0.1">
                         </div>
                         <div class="input-group">
-                            <label for="fluidTemperature">温度(℃):</label>
+                            <label for="fluidTemperature" data-i18n="valveFluidTemperature">温度(℃):</label>
                             <input type="number" id="fluidTemperature" value="20" step="1">
                         </div>
                     </div>
                     <!-- 第二行：介质选择和密度 -->
                     <div class="medium-selection">
-                        <label for="mediumType">选择介质:</label>
+                        <label for="mediumType" data-i18n="valveMediumType">选择介质:</label>
                         <select id="mediumType">
-                            <option value="0.0899">氢气</option>
-                            <option value="1.225" selected>空气</option>
-                            <option value="1.165">氮气</option>
-                            <option value="1000">水</option>
-                            <option value="1.172">乙烯</option>
-                            <option value="0.717">甲烷</option>
-                            <option value="1.429">氧气</option>
-                            <option value="1.977">二氧化碳</option>
-                            <option value="0.1786">氦气</option>
-                            <option value="0.876">苯</option>
-                            <option value="0.789">乙醇</option>
-                            <option value="3.21">氯气</option>
-                            <option value="5.51">氟利昂</option>
-                            <option value="0.771">氨气</option>
-                            <option value="1.489">氯仿</option>
-                            <option value="0.598">蒸汽（100℃）</option>
+                            <option value="0.0899" data-i18n="mediumHydrogen">氢气</option>
+                            <option value="1.225" selected data-i18n="mediumAir">空气</option>
+                            <option value="1.165" data-i18n="mediumNitrogen">氮气</option>
+                            <option value="1000" data-i18n="mediumWater">水</option>
+                            <option value="1.172" data-i18n="mediumEthylene">乙烯</option>
+                            <option value="0.717" data-i18n="mediumMethane">甲烷</option>
+                            <option value="1.429" data-i18n="mediumOxygen">氧气</option>
+                            <option value="1.977" data-i18n="mediumCO2">二氧化碳</option>
+                            <option value="0.1786" data-i18n="mediumHelium">氦气</option>
+                            <option value="0.876" data-i18n="mediumBenzene">苯</option>
+                            <option value="0.789" data-i18n="mediumEthanol">乙醇</option>
+                            <option value="3.21" data-i18n="mediumChlorine">氯气</option>
+                            <option value="5.51" data-i18n="mediumFreon">氟利昂</option>
+                            <option value="0.771" data-i18n="mediumAmmonia">氨气</option>
+                            <option value="1.489" data-i18n="mediumChloroform">氯仿</option>
+                            <option value="0.598" data-i18n="mediumSteam">蒸汽（100℃）</option>
                         </select>
-                        <span id="selectedDensity">选择介质的密度为: 1.225 kg/m³</span>
+                        <span id="selectedDensity" data-i18n="valveSelectedDensity">选择介质的密度为: 1.225 kg/m³</span>
                     </div>
                 </div>
                 
                 <div class="results-container">
                     <div class="result-section">
-                        <h3>阀门流体计算结果</h3>
-                        <div class="result-item" title="水：Kv(m3/h) = Q*sqrt(ρ/(1000*ΔP))；气体次临界：Kv = QN/514*sqrt(T1*ρN/(P2*ΔP))；气体超临界：Kv = QN/(257*P1)*sqrt(T1*ρN)"><span>Kv(m3/h)：</span><span id="KvValue"></span></div>
-                        <div class="result-item" title="DN(mm) = -77.861*Kv^6+256.11*Kv^5-331.17*Kv^4+215.74*Kv^3-77.502*Kv^2+20.183*Kv+0.476"><span>DN(mm)：</span><span id="valveDiameter"></span></div>
+                        <h3 data-i18n="valveFlowResults">阀门流体计算结果</h3>
+                        <div class="result-item" title="水：Kv(m3/h) = Q*sqrt(ρ/(1000*ΔP))；气体次临界：Kv = QN/514*sqrt(T1*ρN/(P2*ΔP))；气体超临界：Kv = QN/(257*P1)*sqrt(T1*ρN)"><span data-i18n="valveKvValue">Kv(m3/h)：</span><span id="KvValue"></span></div>
+                        <div class="result-item" title="DN(mm) = -77.861*Kv^6+256.11*Kv^5-331.17*Kv^4+215.74*Kv^3-77.502*Kv^2+20.183*Kv+0.476"><span data-i18n="valveDNValue">DN(mm)：</span><span id="valveDiameter"></span></div>
                     </div>
                     
                     <div class="formula-section">
-                        <h3>计算公式</h3>
+                        <h3 data-i18n="valveFormulas">计算公式</h3>
                         <div class="formula-text">
                             <table class="formula-table">
                                 <thead>
                                     <tr>
-                                        <th>压降</th>
-                                        <th>水的Kv值(m3/h)</th>
-                                        <th>气体的Kv值(m3/h)</th>
+                                        <th data-i18n="valvePressureDrop">压降</th>
+                                        <th data-i18n="valveWaterKv">水的Kv值(m3/h)</th>
+                                        <th data-i18n="valveGasKv">气体的Kv值(m3/h)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>次临界P2>1/2P1</td>
+                                        <td data-i18n="valveSubcritical">次临界P2>1/2P1</td>
                                         <td>$$=Q\cdot\sqrt{\frac{\rho}{1000\cdot\Delta P}}$$</td>
                                         <td>$$=\frac{QN}{514}\cdot\sqrt{\frac{T1\cdot\rho N}{P2\cdot\Delta P}}$$</td>
                                     </tr>
                                     <tr>
-                                        <td>超临界P2<1/2P1</td>
+                                        <td data-i18n="valveSupercritical">超临界P2<1/2P1</td>
                                         <td>$$=Q\cdot\sqrt{\frac{\rho}{1000\cdot\Delta P}}$$</td>
                                         <td>$$=\frac{QN}{257\cdot P1}\cdot\sqrt{T1\cdot\rho N}$$</td>
                                     </tr>
@@ -522,27 +538,27 @@
                             </table>
                         </div>
                         <div class="formula-explanation">
-                            <p>Kv 流量系数[m3/h]</p>
-                            <p>QN 气体在标准状态下的流量 [m3/h]</p>
-                            <p>P1 阀门入口压力[bar]</p>
-                            <p>P2阀门出口压力[bar]</p>
-                            <p>ΔP 阀两端压差P1-P2[bar]</p>
-                            <p>ρ 密度[kg/m3]</p>
-                            <p>ρN 气体在标准状态下的密度[kg/m3]</p>
-                            <p>T1 介质温度[(273+t)K]</p>
+                            <p data-i18n="valveKvExplanation">Kv 流量系数[m3/h]</p>
+                            <p data-i18n="valveQNExplanation">QN 气体在标准状态下的流量 [m3/h]</p>
+                            <p data-i18n="valveP1Explanation">P1 阀门入口压力[bar]</p>
+                            <p data-i18n="valveP2Explanation">P2阀门出口压力[bar]</p>
+                            <p data-i18n="valveDeltaPExplanation">ΔP 阀两端压差P1-P2[bar]</p>
+                            <p data-i18n="valveRhoExplanation">ρ 密度[kg/m3]</p>
+                            <p data-i18n="valveRhoNExplanation">ρN 气体在标准状态下的密度[kg/m3]</p>
+                            <p data-i18n="valveT1Explanation">T1 介质温度[(273+t)K]</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="note">
-                    注：Kv值计算范围暂时支持0.012~1.0。
+                    <span data-i18n="valveNote">注：Kv值计算范围暂时支持0.012~1.0。</span>
                 </div>
                 
                 <!-- 参考文献部分 -->
                 <div class="reference">
-                    <h4>参考文献</h4>
+                    <h4 data-i18n="references">参考文献</h4>
                     <ol class="reference-list">
-                        <li>计算理论依据：通过Burkert官网流体计算数据拟合。</li>
+                        <li data-i18n="valveReference">计算理论依据：通过Burkert官网流体计算数据拟合。</li>
                     </ol>
                 </div>
             </div>
@@ -550,58 +566,58 @@
             <!-- 第五页：管路压损计算 -->
             <div class="tab-content" id="pipeline-pressure">
                 <div class="section">
-                    <h2>管路压损计算参数</h2>
+                    <h2 data-i18n="pipelinePressureTitle">管路压损计算参数</h2>
                     <div class="pipeline-four-column">
                         <!-- 第一列：气路输入 -->
                         <div class="pipeline-column">
-                            <h3>气路计算</h3>
+                            <h3 data-i18n="gasCalculation">气路计算</h3>
                             <div class="input-grid">
                                 <div class="input-group">
-                                    <label for="gasStdDensity">介质标况密度(kg/m3):</label>
+                                    <label for="gasStdDensity" data-i18n="gasStdDensity">介质标况密度(kg/m3):</label>
                                     <input type="number" id="gasStdDensity" value="1.293" step="0.001">
                                 </div>
                                 <div class="input-group">
-                                    <label for="gasPressure">介质压力(kPa):</label>
+                                    <label for="gasPressure" data-i18n="gasPressure">介质压力(kPa):</label>
                                     <input type="number" id="gasPressure" value="245770" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="gasTemperature">介质温度(K):</label>
+                                    <label for="gasTemperature" data-i18n="gasTemperature">介质温度(K):</label>
                                     <input type="number" id="gasTemperature" value="383.74" step="0.01">
                                 </div>
                                 <div class="input-group">
-                                    <label for="gasFlowRate">介质流量(NLPM):</label>
+                                    <label for="gasFlowRate" data-i18n="gasFlowRate">介质流量(NLPM):</label>
                                     <input type="number" id="gasFlowRate" value="8354" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="mainPipeDiameter">主管内径(mm):</label>
+                                    <label for="mainPipeDiameter" data-i18n="mainPipeDiameter">主管内径(mm):</label>
                                     <input type="number" id="mainPipeDiameter" value="51" step="0.1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="stackCount">电堆个数(N):</label>
+                                    <label for="stackCount" data-i18n="stackCount">电堆个数(N):</label>
                                     <input type="number" id="stackCount" value="1" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="branchPipeDiameter">分堆入口管内径(mm):</label>
+                                    <label for="branchPipeDiameter" data-i18n="branchPipeDiameter">分堆入口管内径(mm):</label>
                                     <input type="number" id="branchPipeDiameter" value="51" step="0.1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="gasViscosity">介质动力粘度(mm):</label>
+                                    <label for="gasViscosity" data-i18n="gasViscosity">介质动力粘度(mm):</label>
                                     <input type="number" id="gasViscosity" value="2.02e-5" step="0.0000001">
                                 </div>
                                 <div class="input-group">
-                                    <label for="pipeRoughness">管壁绝对粗糙度:</label>
+                                    <label for="pipeRoughness" data-i18n="pipeRoughness">管壁绝对粗糙度:</label>
                                     <input type="number" id="pipeRoughness" value="0.03" step="0.001">
                                 </div>
                                 <div class="input-group">
-                                    <label for="pipeLength">管道长度(m):</label>
+                                    <label for="pipeLength" data-i18n="pipeLength">管道长度(m):</label>
                                     <input type="number" id="pipeLength" value="3" step="0.1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="elbowCount">弯头个数(N):</label>
+                                    <label for="elbowCount" data-i18n="elbowCount">弯头个数(N):</label>
                                     <input type="number" id="elbowCount" value="10" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="teeCount">三通个数(N):</label>
+                                    <label for="teeCount" data-i18n="teeCount">三通个数(N):</label>
                                     <input type="number" id="teeCount" value="0" step="1">
                                 </div>
                             </div>
@@ -609,68 +625,68 @@
                         
                         <!-- 第二列：气路结果 -->
                         <div class="pipeline-column">
-                            <h3>气路计算结果</h3>
+                            <h3 data-i18n="gasCalculationResults">气路计算结果</h3>
                             <div class="result-section">
-                                <div class="result-item" title="介质密度(kg/m3) = 标况密度*273.15/介质温度*介质压力/101325"><span>介质密度(kg/m3)：</span><span id="gasDensity"></span></div>
-                                <div class="result-item" title="介质流量(m3/s) = 介质流量(NLPM)/1000/60*101325/介质压力*介质温度/273.15"><span>介质流量(m3/s)：</span><span id="gasFlowRateM3s"></span></div>
-                                <div class="result-item" title="主管面积(m2) = 0.25*3.14159*主管内径^2/1000000"><span>主管面积(m2)：</span><span id="mainPipeArea"></span></div>
-                                <div class="result-item" title="主管流速(m/s) = 介质流量/主管面积"><span>主管流速(m/s)：</span><span id="mainPipeVelocity"></span></div>
-                                <div class="result-item" title="分堆入口管面积(m2) = 0.25*3.14159*分堆入口管内径^2/1000000"><span>分堆入口管面积(m2)：</span><span id="branchPipeArea"></span></div>
-                                <div class="result-item" title="分堆入口管流速(m/s) = 介质流量/电堆个数/分堆入口管面积"><span>分堆入口管流速(m/s)：</span><span id="branchPipeVelocity"></span></div>
-                                <div class="result-item" title="雷诺数 = 介质密度*主管流速*主管内径/介质动力粘度/1000"><span>雷诺数：</span><span id="reynoldsNumber"></span></div>
-                                <div class="result-item" title="摩擦系数 = (-0.5 / math.log10(管壁绝对粗糙度/3.7/主管内径))^2"><span>摩擦系数：</span><span id="frictionCoefficient"></span></div>
-                                <div class="result-item" title="管道阻力 = 摩擦系数*管道长度/主管内径*介质密度*主管流速^2/2"><span>管道阻力：</span><span id="pipeResistance"></span></div>
-                                <div class="result-item" title="弯头摩擦系数 = 30*摩擦系数"><span>弯头摩擦系数：</span><span id="elbowFrictionCoefficient"></span></div>
-                                <div class="result-item" title="三通摩擦系数 = 60*摩擦系数"><span>三通摩擦系数：</span><span id="teeFrictionCoefficient"></span></div>
-                                <div class="result-item" title="弯头阻力(kPa) = 弯头个数*0.5*弯头摩擦系数*介质密度*主管流速^2/1000"><span>弯头阻力(kPa)：</span><span id="elbowResistance"></span></div>
-                                <div class="result-item" title="三通阻力(kPa) = 三通个数*0.5*三通摩擦系数*介质密度*主管流速^2/1000"><span>三通阻力(kPa)：</span><span id="teeResistance"></span></div>
-                                <div class="result-item" title="局部阻力(kPa) = 弯头阻力+三通阻力"><span>局部阻力(kPa)：</span><span id="localResistance"></span></div>
-                                <div class="result-item" title="管系阻力(kPa) = 管道阻力+局部阻力"><span>管系阻力(kPa)：</span><span id="systemResistance"></span></div>
+                                <div class="result-item" title="介质密度(kg/m3) = 标况密度*273.15/介质温度*介质压力/101325"><span data-i18n="gasDensityResult">介质密度(kg/m3)：</span><span id="gasDensity"></span></div>
+                                <div class="result-item" title="介质流量(m3/s) = 介质流量(NLPM)/1000/60*101325/介质压力*介质温度/273.15"><span data-i18n="gasFlowRateM3sResult">介质流量(m3/s)：</span><span id="gasFlowRateM3s"></span></div>
+                                <div class="result-item" title="主管面积(m2) = 0.25*3.14159*主管内径^2/1000000"><span data-i18n="mainPipeAreaResult">主管面积(m2)：</span><span id="mainPipeArea"></span></div>
+                                <div class="result-item" title="主管流速(m/s) = 介质流量/主管面积"><span data-i18n="mainPipeVelocityResult">主管流速(m/s)：</span><span id="mainPipeVelocity"></span></div>
+                                <div class="result-item" title="分堆入口管面积(m2) = 0.25*3.14159*分堆入口管内径^2/1000000"><span data-i18n="branchPipeAreaResult">分堆入口管面积(m2)：</span><span id="branchPipeArea"></span></div>
+                                <div class="result-item" title="分堆入口管流速(m/s) = 介质流量/电堆个数/分堆入口管面积"><span data-i18n="branchPipeVelocityResult">分堆入口管流速(m/s)：</span><span id="branchPipeVelocity"></span></div>
+                                <div class="result-item" title="雷诺数 = 介质密度*主管流速*主管内径/介质动力粘度/1000"><span data-i18n="reynoldsNumberResult">雷诺数：</span><span id="reynoldsNumber"></span></div>
+                                <div class="result-item" title="摩擦系数 = (-0.5 / math.log10(管壁绝对粗糙度/3.7/主管内径))^2"><span data-i18n="frictionCoefficientResult">摩擦系数：</span><span id="frictionCoefficient"></span></div>
+                                <div class="result-item" title="管道阻力 = 摩擦系数*管道长度/主管内径*介质密度*主管流速^2/2"><span data-i18n="pipeResistanceResult">管道阻力：</span><span id="pipeResistance"></span></div>
+                                <div class="result-item" title="弯头摩擦系数 = 30*摩擦系数"><span data-i18n="elbowFrictionCoefficientResult">弯头摩擦系数：</span><span id="elbowFrictionCoefficient"></span></div>
+                                <div class="result-item" title="三通摩擦系数 = 60*摩擦系数"><span data-i18n="teeFrictionCoefficientResult">三通摩擦系数：</span><span id="teeFrictionCoefficient"></span></div>
+                                <div class="result-item" title="弯头阻力(kPa) = 弯头个数*0.5*弯头摩擦系数*介质密度*主管流速^2/1000"><span data-i18n="elbowResistanceResult">弯头阻力(kPa)：</span><span id="elbowResistance"></span></div>
+                                <div class="result-item" title="三通阻力(kPa) = 三通个数*0.5*三通摩擦系数*介质密度*主管流速^2/1000"><span data-i18n="teeResistanceResult">三通阻力(kPa)：</span><span id="teeResistance"></span></div>
+                                <div class="result-item" title="局部阻力(kPa) = 弯头阻力+三通阻力"><span data-i18n="localResistanceResult">局部阻力(kPa)：</span><span id="localResistance"></span></div>
+                                <div class="result-item" title="管系阻力(kPa) = 管道阻力+局部阻力"><span data-i18n="systemResistanceResult">管系阻力(kPa)：</span><span id="systemResistance"></span></div>
                             </div>
                         </div>
                         
                         <!-- 第三列：水路输入 -->
                         <div class="pipeline-column">
-                            <h3>水路计算</h3>
+                            <h3 data-i18n="waterCalculation">水路计算</h3>
                             <div class="input-grid">
                                 <div class="input-group">
-                                    <label for="coolantDensityWater">冷却液密度(kg/m3):</label>
+                                    <label for="coolantDensityWater" data-i18n="coolantDensityWater">冷却液密度(kg/m3):</label>
                                     <input type="number" id="coolantDensityWater" value="1060" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="waterFlowRate">介质流量(NLPM):</label>
+                                    <label for="waterFlowRate" data-i18n="waterFlowRate">介质流量(NLPM):</label>
                                     <input type="number" id="waterFlowRate" value="254" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="waterMainPipeDiameter">主管内径(mm):</label>
+                                    <label for="waterMainPipeDiameter" data-i18n="waterMainPipeDiameter">主管内径(mm):</label>
                                     <input type="number" id="waterMainPipeDiameter" value="45" step="0.1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="waterStackCount">电堆个数(N):</label>
+                                    <label for="waterStackCount" data-i18n="waterStackCount">电堆个数(N):</label>
                                     <input type="number" id="waterStackCount" value="1" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="waterBranchPipeDiameter">分堆入口管内径(mm):</label>
+                                    <label for="waterBranchPipeDiameter" data-i18n="waterBranchPipeDiameter">分堆入口管内径(mm):</label>
                                     <input type="number" id="waterBranchPipeDiameter" value="45" step="0.1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="waterViscosity">介质动力粘度(mm):</label>
+                                    <label for="waterViscosity" data-i18n="waterViscosity">介质动力粘度(mm):</label>
                                     <input type="number" id="waterViscosity" value="1.43e-3" step="0.000001">
                                 </div>
                                 <div class="input-group">
-                                    <label for="waterPipeRoughness">管壁绝对粗糙度:</label>
+                                    <label for="waterPipeRoughness" data-i18n="waterPipeRoughness">管壁绝对粗糙度:</label>
                                     <input type="number" id="waterPipeRoughness" value="0.03" step="0.001">
                                 </div>
                                 <div class="input-group">
-                                    <label for="waterPipeLength">管道长度(m):</label>
+                                    <label for="waterPipeLength" data-i18n="waterPipeLength">管道长度(m):</label>
                                     <input type="number" id="waterPipeLength" value="3" step="0.1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="waterElbowCount">弯头个数(N):</label>
+                                    <label for="waterElbowCount" data-i18n="waterElbowCount">弯头个数(N):</label>
                                     <input type="number" id="waterElbowCount" value="5" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="waterTeeCount">三通个数(N):</label>
+                                    <label for="waterTeeCount" data-i18n="waterTeeCount">三通个数(N):</label>
                                     <input type="number" id="waterTeeCount" value="2" step="1">
                                 </div>
                             </div>
@@ -678,22 +694,22 @@
                         
                         <!-- 第四列：水路结果 -->
                         <div class="pipeline-column">
-                            <h3>水路计算结果</h3>
+                            <h3 data-i18n="waterCalculationResults">水路计算结果</h3>
                             <div class="result-section">
-                                <div class="result-item" title="介质流量(m3/s) = 介质流量(NLPM)/1000/60"><span>介质流量(m3/s)：</span><span id="waterFlowRateM3s"></span></div>
-                                <div class="result-item" title="主管面积(m2) = 0.25*3.14159*主管内径^2/1000000"><span>主管面积(m2)：</span><span id="waterMainPipeArea"></span></div>
-                                <div class="result-item" title="主管流速(m/s) = 介质流量/主管面积"><span>主管流速(m/s)：</span><span id="waterMainPipeVelocity"></span></div>
-                                <div class="result-item" title="分堆入口管面积(m2) = 0.25*3.14159*分堆入口管内径^2/1000000"><span>分堆入口管面积(m2)：</span><span id="waterBranchPipeArea"></span></div>
-                                <div class="result-item" title="分堆入口管流速(m/s) = 介质流量/电堆个数/分堆入口管面积"><span>分堆入口管流速(m/s)：</span><span id="waterBranchPipeVelocity"></span></div>
-                                <div class="result-item" title="雷诺数 = 冷却液密度*主管流速*主管内径/介质动力粘度/1000"><span>雷诺数：</span><span id="waterReynoldsNumber"></span></div>
-                                <div class="result-item" title="摩擦系数 = (-0.5 / math.log10(管壁绝对粗糙度/3.7/主管内径))^2"><span>摩擦系数：</span><span id="waterFrictionCoefficient"></span></div>
-                                <div class="result-item" title="管道阻力(kPa) = 摩擦系数*管道长度/主管内径*冷却液密度*主管流速^2/2"><span>管道阻力(kPa)：</span><span id="waterPipeResistance"></span></div>
-                                <div class="result-item" title="弯头摩擦系数 = 30*摩擦系数"><span>弯头摩擦系数：</span><span id="waterElbowFrictionCoefficient"></span></div>
-                                <div class="result-item" title="三通摩擦系数 = 60*摩擦系数"><span>三通摩擦系数：</span><span id="waterTeeFrictionCoefficient"></span></div>
-                                <div class="result-item" title="弯头阻力(kPa) = 弯头个数*0.5*弯头摩擦系数*冷却液密度*主管流速^2/1000"><span>弯头阻力(kPa)：</span><span id="waterElbowResistance"></span></div>
-                                <div class="result-item" title="三通阻力(kPa) = 三通个数*0.5*三通摩擦系数*冷却液密度*主管流速^2/1000"><span>三通阻力(kPa)：</span><span id="waterTeeResistance"></span></div>
-                                <div class="result-item" title="局部阻力(kPa) = 弯头阻力+三通阻力"><span>局部阻力(kPa)：</span><span id="waterLocalResistance"></span></div>
-                                <div class="result-item" title="管系阻力(kPa) = 管道阻力+局部阻力"><span>管系阻力(kPa)：</span><span id="waterSystemResistance"></span></div>
+                                <div class="result-item" title="介质流量(m3/s) = 介质流量(NLPM)/1000/60"><span data-i18n="waterFlowRateM3sResult">介质流量(m3/s)：</span><span id="waterFlowRateM3s"></span></div>
+                                <div class="result-item" title="主管面积(m2) = 0.25*3.14159*主管内径^2/1000000"><span data-i18n="waterMainPipeAreaResult">主管面积(m2)：</span><span id="waterMainPipeArea"></span></div>
+                                <div class="result-item" title="主管流速(m/s) = 介质流量/主管面积"><span data-i18n="waterMainPipeVelocityResult">主管流速(m/s)：</span><span id="waterMainPipeVelocity"></span></div>
+                                <div class="result-item" title="分堆入口管面积(m2) = 0.25*3.14159*分堆入口管内径^2/1000000"><span data-i18n="waterBranchPipeAreaResult">分堆入口管面积(m2)：</span><span id="waterBranchPipeArea"></span></div>
+                                <div class="result-item" title="分堆入口管流速(m/s) = 介质流量/电堆个数/分堆入口管面积"><span data-i18n="waterBranchPipeVelocityResult">分堆入口管流速(m/s)：</span><span id="waterBranchPipeVelocity"></span></div>
+                                <div class="result-item" title="雷诺数 = 冷却液密度*主管流速*主管内径/介质动力粘度/1000"><span data-i18n="waterReynoldsNumberResult">雷诺数：</span><span id="waterReynoldsNumber"></span></div>
+                                <div class="result-item" title="摩擦系数 = (-0.5 / math.log10(管壁绝对粗糙度/3.7/主管内径))^2"><span data-i18n="waterFrictionCoefficientResult">摩擦系数：</span><span id="waterFrictionCoefficient"></span></div>
+                                <div class="result-item" title="管道阻力(kPa) = 摩擦系数*管道长度/主管内径*冷却液密度*主管流速^2/2"><span data-i18n="waterPipeResistanceResult">管道阻力(kPa)：</span><span id="waterPipeResistance"></span></div>
+                                <div class="result-item" title="弯头摩擦系数 = 30*摩擦系数"><span data-i18n="waterElbowFrictionCoefficientResult">弯头摩擦系数：</span><span id="waterElbowFrictionCoefficient"></span></div>
+                                <div class="result-item" title="三通摩擦系数 = 60*摩擦系数"><span data-i18n="waterTeeFrictionCoefficientResult">三通摩擦系数：</span><span id="waterTeeFrictionCoefficient"></span></div>
+                                <div class="result-item" title="弯头阻力(kPa) = 弯头个数*0.5*弯头摩擦系数*冷却液密度*主管流速^2/1000"><span data-i18n="waterElbowResistanceResult">弯头阻力(kPa)：</span><span id="waterElbowResistance"></span></div>
+                                <div class="result-item" title="三通阻力(kPa) = 三通个数*0.5*三通摩擦系数*冷却液密度*主管流速^2/1000"><span data-i18n="waterTeeResistanceResult">三通阻力(kPa)：</span><span id="waterTeeResistance"></span></div>
+                                <div class="result-item" title="局部阻力(kPa) = 弯头阻力+三通阻力"><span data-i18n="waterLocalResistanceResult">局部阻力(kPa)：</span><span id="waterLocalResistance"></span></div>
+                                <div class="result-item" title="管系阻力(kPa) = 管道阻力+局部阻力"><span data-i18n="waterSystemResistanceResult">管系阻力(kPa)：</span><span id="waterSystemResistance"></span></div>
                             </div>
                         </div>
                     </div>
@@ -708,44 +724,44 @@
                     
                     <div class="input-container">
                         <div class="input-column">
-                            <h3>散热器计算</h3>
+                            <h3 data-i18n="radiatorCalc">散热器计算</h3>
                             <div class="input-grid">
                                 <div class="input-group">
-                                    <label for="coolantHeatRatio">冷却液带走热量比重 ξ:</label>
+                                    <label for="coolantHeatRatio" data-i18n="coolantHeatRatio">冷却液带走热量比重 ξ:</label>
                                     <input type="number" id="coolantHeatRatio" value="0.98" step="0.01">
                                 </div>
                                 <div class="input-group">
-                                    <label for="airTempDifference">冷却空气流经散热器温差(℃):</label>
+                                    <label for="airTempDifference" data-i18n="airTempDifference">冷却空气流经散热器温差(℃):</label>
                                     <input type="number" id="airTempDifference" value="15" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="radiatorKa">散热器总传热系数Ka W/(m2·℃):</label>
+                                    <label for="radiatorKa" data-i18n="radiatorKa">散热器总传热系数Ka W/(m2·℃):</label>
                                     <input type="number" id="radiatorKa" value="115" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="fanCount">风扇个数:</label>
+                                    <label for="fanCount" data-i18n="fanCount">风扇个数:</label>
                                     <input type="number" id="fanCount" value="12" step="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="fanAreaRatio">风扇面积/散热器面积比率α:</label>
+                                    <label for="fanAreaRatio" data-i18n="fanAreaRatio">风扇面积/散热器面积比率α:</label>
                                     <input type="number" id="fanAreaRatio" value="0.78" step="0.01">
                                 </div>
                                 <div class="input-group">
-                                    <label for="fanDiameter">单风扇叶轮直径(mm):</label>
+                                    <label for="fanDiameter" data-i18n="fanDiameter">单风扇叶轮直径(mm):</label>
                                     <input type="number" id="fanDiameter" value="315.7" step="0.1">
                                 </div>
                             </div>
                         </div>
                         
                         <div class="input-column">
-                            <h3>中冷器计算</h3>
+                            <h3 data-i18n="intercoolerCalc">中冷器计算</h3>
                             <div class="input-grid">
                                 <div class="input-group">
-                                    <label for="coolantTempDiff">冷却液流经中冷器温差(℃):</label>
+                                    <label for="coolantTempDiff" data-i18n="coolantTempDiff">冷却液流经中冷器温差(℃):</label>
                                     <input type="number" id="coolantTempDiff" value="7" step="0.1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="intercoolerKa">中冷器总传热系数Ka W/(m2·℃):</label>
+                                    <label for="intercoolerKa" data-i18n="intercoolerKa">中冷器总传热系数Ka W/(m2·℃):</label>
                                     <input type="number" id="intercoolerKa" value="130" step="1">
                                 </div>
                             </div>
@@ -755,37 +771,37 @@
                 
                 <div class="results-container">
                     <div class="result-section">
-                        <h3>散热器计算结果</h3>
-                        <div class="result-item" title="系统总热负荷(kW) = 输入热负荷值*0.001"><span>系统总热负荷(kW)：</span><span id="radiatorSystemTotalHeatLoad"></span></div>
-                        <div class="result-item" title="环境温度(℃) = 输入环境温度值"><span>环境温度(℃)：</span><span id="radiatorAmbientTemp"></span></div>
-                        <div class="result-item" title="冷却空气出散热器温度(℃) = 环境温度+冷却空气流经散热器温差"><span>冷却空气出散热器温度(℃)：</span><span id="radiatorOutletAirTemp"></span></div>
-                        <div class="result-item" title="冷却液密度(kg/m3) = 乙二醇占比*1.7657 + 981.43"><span>冷却液密度(kg/m3)：</span><span id="radiatorCoolantDensity"></span></div>
-                        <div class="result-item" title="冷却液比热(kJ/(kg·K)) = 乙二醇占比*0.00404 - 0.0441*乙二醇占比 + 4.1868"><span>冷却液比热(kJ/(kg·K))：</span><span id="radiatorCoolantSpecificHeat"></span></div>
-                        <div class="result-item" title="冷却水进口温度(℃) = 输入冷却水进口温度值"><span>冷却水进口温度(℃)：</span><span id="radiatorCoolantInletTemp"></span></div>
-                        <div class="result-item" title="冷却水出口温度(℃) = 冷却水进口温度-散热量/(冷却液密度*冷却循环流量*冷却液比热/60)"><span>冷却水出口温度(℃)：</span><span id="radiatorCoolantOutletTemp"></span></div>
-                        <div class="result-item" title="冷却循环流量(L/min) = 输入冷却循环流量值"><span>冷却循环流量(L/min)：</span><span id="radiatorCoolantFlow"></span></div>
-                        <div class="result-item" title="错流对数温差修正系数εΔt = [sqrt(R²+1)/(R-1)]*[ln((1-E)/(1-R*E))/ln((2/E-1-R+sqrt(R²+1))/(2/E-1-R-sqrt(R²+1)))]，其中R=操作温差/冷却空气流经散热器温差，E=冷却空气流经散热器温差/(冷却水进口温度-环境温度)"><span>错流对数温差修正系数εΔt：</span><span id="radiatorLogMeanTempCorrection"></span></div>
-                        <div class="result-item" title="所需散热面积(m2) = 系统总热负荷*1000/(散热器总传热系数*对数平均温差*错流对数温差修正系数)"><span>所需散热面积(m2)：</span><span id="requiredHeatDissipationArea"></span></div>
-                        <div class="result-item" title="散热器迎风面积(m2) = 所需冷却空气流量/(3600*空气流速)"><span>散热器迎风面积(m2)：</span><span id="radiatorFrontalArea"></span></div>
-                        <div class="result-item" title="所需冷却空气流量(m3/h) = 散热量/(空气密度*空气比热*冷却空气流经散热器温差)*3600"><span>所需冷却空气流量(m3/h)：</span><span id="requiredCoolingAirFlow"></span></div>
-                        <div class="result-item" title="单风扇风量需求(m3/h) = 所需冷却空气流量/(风扇个数*风扇面积/散热器面积比率)"><span>单风扇风量需求(m3/h)：</span><span id="singleFanAirFlow"></span></div>
+                        <h3 data-i18n="radiatorCalcResults">散热器计算结果</h3>
+                        <div class="result-item" title="系统总热负荷(kW) = 输入热负荷值*0.001"><span data-i18n="radiatorSystemTotalHeatLoad">系统总热负荷(kW)：</span><span id="radiatorSystemTotalHeatLoad"></span></div>
+                        <div class="result-item" title="环境温度(℃) = 输入环境温度值"><span data-i18n="radiatorAmbientTemp">环境温度(℃)：</span><span id="radiatorAmbientTemp"></span></div>
+                        <div class="result-item" title="冷却空气出散热器温度(℃) = 环境温度+冷却空气流经散热器温差"><span data-i18n="radiatorOutletAirTemp">冷却空气出散热器温度(℃)：</span><span id="radiatorOutletAirTemp"></span></div>
+                        <div class="result-item" title="冷却液密度(kg/m3) = 乙二醇占比*1.7657 + 981.43"><span data-i18n="radiatorCoolantDensity">冷却液密度(kg/m3)：</span><span id="radiatorCoolantDensity"></span></div>
+                        <div class="result-item" title="冷却液比热(kJ/(kg·K)) = 乙二醇占比*0.00404 - 0.0441*乙二醇占比 + 4.1868"><span data-i18n="radiatorCoolantSpecificHeat">冷却液比热(kJ/(kg·K))：</span><span id="radiatorCoolantSpecificHeat"></span></div>
+                        <div class="result-item" title="冷却水进口温度(℃) = 输入冷却水进口温度值"><span data-i18n="radiatorCoolantInletTemp">冷却水进口温度(℃)：</span><span id="radiatorCoolantInletTemp"></span></div>
+                        <div class="result-item" title="冷却水出口温度(℃) = 冷却水进口温度-散热量/(冷却液密度*冷却循环流量*冷却液比热/60)"><span data-i18n="radiatorCoolantOutletTemp">冷却水出口温度(℃)：</span><span id="radiatorCoolantOutletTemp"></span></div>
+                        <div class="result-item" title="冷却循环流量(L/min) = 输入冷却循环流量值"><span data-i18n="radiatorCoolantFlow">冷却循环流量(L/min)：</span><span id="radiatorCoolantFlow"></span></div>
+                        <div class="result-item" title="错流对数温差修正系数εΔt = [sqrt(R²+1)/(R-1)]*[ln((1-E)/(1-R*E))/ln((2/E-1-R+sqrt(R²+1))/(2/E-1-R-sqrt(R²+1)))]，其中R=操作温差/冷却空气流经散热器温差，E=冷却空气流经散热器温差/(冷却水进口温度-环境温度)"><span data-i18n="radiatorLogMeanTempCorrection">错流对数温差修正系数εΔt：</span><span id="radiatorLogMeanTempCorrection"></span></div>
+                        <div class="result-item" title="所需散热面积(m2) = 系统总热负荷*1000/(散热器总传热系数*对数平均温差*错流对数温差修正系数)"><span data-i18n="requiredHeatDissipationArea">所需散热面积(m2)：</span><span id="requiredHeatDissipationArea"></span></div>
+                        <div class="result-item" title="散热器迎风面积(m2) = 所需冷却空气流量/(3600*空气流速)"><span data-i18n="radiatorFrontalArea">散热器迎风面积(m2)：</span><span id="radiatorFrontalArea"></span></div>
+                        <div class="result-item" title="所需冷却空气流量(m3/h) = 散热量/(空气密度*空气比热*冷却空气流经散热器温差)*3600"><span data-i18n="requiredCoolingAirFlow">所需冷却空气流量(m3/h)：</span><span id="requiredCoolingAirFlow"></span></div>
+                        <div class="result-item" title="单风扇风量需求(m3/h) = 所需冷却空气流量/(风扇个数*风扇面积/散热器面积比率)"><span data-i18n="singleFanAirFlow">单风扇风量需求(m3/h)：</span><span id="singleFanAirFlow"></span></div>
                     </div>
                     
                     <div class="result-section">
-                        <h3>中冷器计算结果</h3>
-                        <div class="result-item" title="中冷器热负荷(kW) = 增压空气流量*空气密度*空气比热*(增压空气进口温度-增压空气出口温度)/(1000*60)"><span>中冷器热负荷(kW)：</span><span id="intercoolerHeatLoad1"></span></div>
-                        <div class="result-item" title="增压空气进口温度(℃) = 输入增压空气进口温度值"><span>增压空气进口温度(℃)：</span><span id="pressurizedAirInletTemp"></span></div>
-                        <div class="result-item" title="增压空气出口温度(℃) = 输入增压空气出口温度值"><span>增压空气出口温度(℃)：</span><span id="pressurizedAirOutletTemp"></span></div>
-                        <div class="result-item" title="冷却液进口温度(℃) = 输入冷却液进口温度值"><span>冷却液进口温度(℃)：</span><span id="intercoolerCoolantInletTemp"></span></div>
-                        <div class="result-item" title="冷却液出口温度(℃) = 冷却液进口温度+冷却液流经中冷器温差"><span>冷却液出口温度(℃)：</span><span id="intercoolerCoolantOutletTemp"></span></div>
-                        <div class="result-item" title="增压空气流量(L/min) = 输入增压空气流量值"><span>增压空气流量(L/min)：</span><span id="pressurizedAirFlow"></span></div>
-                        <div class="result-item" title="冷却液流量(L/min) = 中冷器热负荷*60/(冷却液密度*冷却液比热*冷却液流经中冷器温差)"><span>冷却液流量(L/min)：</span><span id="intercoolerCoolantFlow"></span></div>
-                        <div class="result-item" title="错流对数温差修正系数εΔt = [sqrt(R₁²+1)/(R₁-1)]*[ln((1-E₁)/(1-R₁*E₁))/ln((2/E₁-1-R₁+sqrt(R₁²+1))/(2/E₁-1-R₁-sqrt(R₁²+1)))]，其中R₁=(增压空气进口温度-增压空气出口温度)/冷却液流经中冷器温差，E₁=冷却液流经中冷器温差/(增压空气进口温度-冷却液出口温度)"><span>错流对数温差修正系数εΔt：</span><span id="intercoolerLogMeanTempCorrection"></span></div>
-                        <div class="result-item" title="所需散热面积(m2) = 中冷器热负荷*1000/(中冷器总传热系数*对数平均温差*错流对数温差修正系数)"><span>所需散热面积(m2)：</span><span id="intercoolerRequiredArea"></span></div>
+                        <h3 data-i18n="intercoolerCalcResults">中冷器计算结果</h3>
+                        <div class="result-item" title="中冷器热负荷(kW) = 增压空气流量*空气密度*空气比热*(增压空气进口温度-增压空气出口温度)/(1000*60)"><span data-i18n="intercoolerHeatLoad1">中冷器热负荷(kW)：</span><span id="intercoolerHeatLoad1"></span></div>
+                        <div class="result-item" title="增压空气进口温度(℃) = 输入增压空气进口温度值"><span data-i18n="pressurizedAirInletTemp">增压空气进口温度(℃)：</span><span id="pressurizedAirInletTemp"></span></div>
+                        <div class="result-item" title="增压空气出口温度(℃) = 输入增压空气出口温度值"><span data-i18n="pressurizedAirOutletTemp">增压空气出口温度(℃)：</span><span id="pressurizedAirOutletTemp"></span></div>
+                        <div class="result-item" title="冷却液进口温度(℃) = 输入冷却液进口温度值"><span data-i18n="intercoolerCoolantInletTemp">冷却液进口温度(℃)：</span><span id="intercoolerCoolantInletTemp"></span></div>
+                        <div class="result-item" title="冷却液出口温度(℃) = 冷却液进口温度+冷却液流经中冷器温差"><span data-i18n="intercoolerCoolantOutletTemp">冷却液出口温度(℃)：</span><span id="intercoolerCoolantOutletTemp"></span></div>
+                        <div class="result-item" title="增压空气流量(L/min) = 输入增压空气流量值"><span data-i18n="pressurizedAirFlow">增压空气流量(L/min)：</span><span id="pressurizedAirFlow"></span></div>
+                        <div class="result-item" title="冷却液流量(L/min) = 中冷器热负荷*60/(冷却液密度*冷却液比热*冷却液流经中冷器温差)"><span data-i18n="intercoolerCoolantFlow">冷却液流量(L/min)：</span><span id="intercoolerCoolantFlow"></span></div>
+                        <div class="result-item" title="错流对数温差修正系数εΔt = [sqrt(R₁²+1)/(R₁-1)]*[ln((1-E₁)/(1-R₁*E₁))/ln((2/E₁-1-R₁+sqrt(R₁²+1))/(2/E₁-1-R₁-sqrt(R₁²+1)))]，其中R₁=(增压空气进口温度-增压空气出口温度)/冷却液流经中冷器温差，E₁=冷却液流经中冷器温差/(增压空气进口温度-冷却液出口温度)"><span data-i18n="intercoolerLogMeanTempCorrection">错流对数温差修正系数εΔt：</span><span id="intercoolerLogMeanTempCorrection"></span></div>
+                        <div class="result-item" title="所需散热面积(m2) = 中冷器热负荷*1000/(中冷器总传热系数*对数平均温差*错流对数温差修正系数)"><span data-i18n="intercoolerRequiredArea">所需散热面积(m2)：</span><span id="intercoolerRequiredArea"></span></div>
                     </div>
                 </div>
                 
-                <div class="note">
+                <div class="note" data-i18n="heatExchangerNote">
                     注：散热器计算到所需的散热面积和风扇个数即可，单个风扇的风量以及散热器迎风面积需要同时考虑所选风扇的效率和直径。中冷器只需要计算到散热面积和冷却液流量。<br>
                     Ka--散热器总传热系数，传统发动机散热器一般为104-143W/(m2·℃)，燃料电池为低温散热，取较低值，取115 W/(m2·℃)。
                 </div>
@@ -794,98 +810,98 @@
             <!-- 第七页：燃料电池混合动力系统计算 -->
             <div class="tab-content" id="hybrid-system">
                 <div class="section">
-                    <h2>整车参数表</h2>
+                    <h2 data-i18n="vehicleParamsTitle">整车参数表</h2>
                     <div class="input-grid">
                         <div class="input-group">
-                            <label for="vehicleMass">满载质量(Kg):</label>
+                            <label for="vehicleMass" data-i18n="vehicleMass">满载质量(Kg):</label>
                             <input type="number" id="vehicleMass" value="6350" step="10">
                         </div>
                         <div class="input-group">
-                            <label for="range">续驶里程(Km):</label>
+                            <label for="range" data-i18n="range">续驶里程(Km):</label>
                             <input type="number" id="range" value="400" step="10">
                         </div>
                         <div class="input-group">
-                            <label for="rollingResistance">滚动阻力系数𝑓:</label>
+                            <label for="rollingResistance" data-i18n="rollingResistance">滚动阻力系数𝑓:</label>
                             <input type="number" id="rollingResistance" value="0.013" step="0.001">
                         </div>
                         <div class="input-group">
-                            <label for="dragCoefficient">空气阻力系数Cd:</label>
+                            <label for="dragCoefficient" data-i18n="dragCoefficient">空气阻力系数Cd:</label>
                             <input type="number" id="dragCoefficient" value="0.56" step="0.01">
                         </div>
                         <div class="input-group">
-                            <label for="maxSpeed">最高车速(km/h):</label>
+                            <label for="maxSpeed" data-i18n="maxSpeed">最高车速(km/h):</label>
                             <input type="number" id="maxSpeed" value="100" step="5">
                         </div>
                         <div class="input-group">
-                            <label for="maxGradeability">最大爬坡度(%):</label>
+                            <label for="maxGradeability" data-i18n="maxGradeability">最大爬坡度(%):</label>
                             <input type="number" id="maxGradeability" value="30" step="1">
                         </div>
                         <div class="input-group">
-                            <label for="gradeabilitySpeed">爬坡车速(km/h):</label>
+                            <label for="gradeabilitySpeed" data-i18n="gradeabilitySpeed">爬坡车速(km/h):</label>
                             <input type="number" id="gradeabilitySpeed" value="15" step="1">
                         </div>
                         <div class="input-group">
-                            <label for="accelerationEndSpeed">加速末车速(km/h):</label>
+                            <label for="accelerationEndSpeed" data-i18n="accelerationEndSpeed">加速末车速(km/h):</label>
                             <input type="number" id="accelerationEndSpeed" value="50" step="5">
                         </div>
                         <div class="input-group">
-                            <label for="accelerationTime">加速时间(s):</label>
+                            <label for="accelerationTime" data-i18n="accelerationTime">加速时间(s):</label>
                             <input type="number" id="accelerationTime" value="15" step="1">
                         </div>
                         <div class="input-group">
-                            <label for="frontalArea">迎风面积(m2):</label>
+                            <label for="frontalArea" data-i18n="frontalArea">迎风面积(m2):</label>
                             <input type="number" id="frontalArea" value="5.55" step="0.01">
                         </div>
                         <div class="input-group">
-                            <label for="powertrainEfficiency">整车动力传动系统效率η:</label>
+                            <label for="powertrainEfficiency" data-i18n="powertrainEfficiency">整车动力传动系统效率η:</label>
                             <input type="number" id="powertrainEfficiency" value="0.93" step="0.01">
                         </div>
                         <div class="input-group">
-                            <label for="rotatingMassCoefficient">汽车旋转质量换算系数δ:</label>
+                            <label for="rotatingMassCoefficient" data-i18n="rotatingMassCoefficient">汽车旋转质量换算系数δ:</label>
                             <input type="number" id="rotatingMassCoefficient" value="1.02" step="0.01">
                         </div>
                         <div class="input-group">
-                            <label for="finalDriveRatio">主减速比iο:</label>
+                            <label for="finalDriveRatio" data-i18n="finalDriveRatio">主减速比iο:</label>
                             <input type="number" id="finalDriveRatio" value="6" step="0.01">
                         </div>
                         <div class="input-group">
-                            <label for="lowGearRatio">变速器低档传动比ig:</label>
+                            <label for="lowGearRatio" data-i18n="lowGearRatio">变速器低档传动比ig:</label>
                             <input type="number" id="lowGearRatio" value="1.4" step="0.01">
                         </div>
                         <div class="input-group">
-                            <label for="highGearRatio">变速器高档传动比ig:</label>
+                            <label for="highGearRatio" data-i18n="highGearRatio">变速器高档传动比ig:</label>
                             <input type="number" id="highGearRatio" value="0.783" step="0.001">
                         </div>
                         <div class="input-group">
-                            <label for="tireRadius">驱动轮胎半径(m):</label>
+                            <label for="tireRadius" data-i18n="tireRadius">驱动轮胎半径(m):</label>
                             <input type="number" id="tireRadius" value="0.385" step="0.001">
                         </div>
                         <div class="input-group">
-                            <label for="accessoryPower">整车附件功率(kW):</label>
+                            <label for="accessoryPower" data-i18n="accessoryPower">整车附件功率(kW):</label>
                             <input type="number" id="accessoryPower" value="4" step="0.1">
                         </div>
                         <div class="input-group">
-                            <label for="motorEfficiency">驱动电机及控制器效率η:</label>
+                            <label for="motorEfficiency" data-i18n="motorEfficiency">驱动电机及控制器效率η:</label>
                             <input type="number" id="motorEfficiency" value="0.93" step="0.01">
                         </div>
                         <div class="input-group">
-                            <label for="batteryEfficiency">动力电池效率η:</label>
+                            <label for="batteryEfficiency" data-i18n="batteryEfficiency">动力电池效率η:</label>
                             <input type="number" id="batteryEfficiency" value="0.85" step="0.01">
                         </div>
                         <div class="input-group">
-                            <label for="hydrogenBottlePressure">氢气瓶压力(MPa):</label>
+                            <label for="hydrogenBottlePressure" data-i18n="hydrogenBottlePressure">氢气瓶压力(MPa):</label>
                             <input type="number" id="hydrogenBottlePressure" value="35" step="1">
                         </div>
                         <div class="input-group">
-                            <label for="hydrogenBottleVolume">氢气瓶容积(L):</label>
+                            <label for="hydrogenBottleVolume" data-i18n="hydrogenBottleVolume">氢气瓶容积(L):</label>
                             <input type="number" id="hydrogenBottleVolume" value="40" step="1">
                         </div>
                         <div class="input-group">
-                            <label for="pemCellVoltage">额定工况PEM节电压(V):</label>
+                            <label for="pemCellVoltage" data-i18n="pemCellVoltage">额定工况PEM节电压(V):</label>
                             <input type="number" id="pemCellVoltage" value="0.62" step="0.001">
                         </div>
                         <div class="input-group">
-                            <label for="hydrogenPrice">氢气价格(元/kg):</label>
+                            <label for="hydrogenPrice" data-i18n="hydrogenPrice">氢气价格(元/kg):</label>
                             <input type="number" id="hydrogenPrice" value="30" step="0.1">
                         </div>
                     </div>
@@ -895,48 +911,48 @@
                     <div class="result-grid">
                         <!-- 第一组：第一行第一列 -->
                         <div class="result-section">
-                            <div class="result-item" title="最大爬坡角(θ) = arctan(最大爬坡度/100) * 180/π"><span>最大爬坡角(θ)：</span><span id="maxClimbingAngle"></span></div>
-                            <div class="result-item" title="加速阶段加速度(m/s2) = 加速末车速/加速时间/3.6*1000"><span>加速阶段加速度(m/s2)：</span><span id="acceleration"></span></div>
-                            <div class="result-item" title="Pmax1_最高车速功率(kW) = 最高车速/3600/整车动力传动系统效率*(整车质量*9.8*滚动阻力系数+空气阻力系数*迎风面积*最高车速²/21.15)"><span>Pmax1_最高车速功率(kW)：</span><span id="maxSpeedPower"></span></div>
-                            <div class="result-item" title="Pmax2_最大爬坡功率(kW) = 爬坡车速/3600/整车动力传动系统效率*(整车质量*9.8*滚动阻力系数*cos(最大爬坡角*π/180)+整车质量*9.8*sin(最大爬坡角*π/180)+空气阻力系数*迎风面积*爬坡车速²/21.15)"><span>Pmax2_最大爬坡功率(kW)：</span><span id="maxGradeabilityPower"></span></div>
-                            <div class="result-item" title="Pmax3_最大加速功率(kW) = 加速末车速/3600/整车动力传动系统效率*(整车质量*9.8*滚动阻力系数+空气阻力系数*迎风面积*加速末车速²/21.15+旋转质量系数*整车质量*(加速末车速/加速时间/3.6))"><span>Pmax3_最大加速功率(kW)：</span><span id="maxAccelerationPower"></span></div>
+                            <div class="result-item" title="最大爬坡角(θ) = arctan(最大爬坡度/100) * 180/π"><span data-i18n="maxClimbingAngle">最大爬坡角(θ)：</span><span id="maxClimbingAngle"></span></div>
+                            <div class="result-item" title="加速阶段加速度(m/s2) = 加速末车速/加速时间/3.6*1000"><span data-i18n="acceleration">加速阶段加速度(m/s2)：</span><span id="acceleration"></span></div>
+                            <div class="result-item" title="Pmax1_最高车速功率(kW) = 最高车速/3600/整车动力传动系统效率*(整车质量*9.8*滚动阻力系数+空气阻力系数*迎风面积*最高车速²/21.15)"><span data-i18n="maxSpeedPower">Pmax1_最高车速功率(kW)：</span><span id="maxSpeedPower"></span></div>
+                            <div class="result-item" title="Pmax2_最大爬坡功率(kW) = 爬坡车速/3600/整车动力传动系统效率*(整车质量*9.8*滚动阻力系数*cos(最大爬坡角*π/180)+整车质量*9.8*sin(最大爬坡角*π/180)+空气阻力系数*迎风面积*爬坡车速²/21.15)"><span data-i18n="maxGradeabilityPower">Pmax2_最大爬坡功率(kW)：</span><span id="maxGradeabilityPower"></span></div>
+                            <div class="result-item" title="Pmax3_最大加速功率(kW) = 加速末车速/3600/整车动力传动系统效率*(整车质量*9.8*滚动阻力系数+空气阻力系数*迎风面积*加速末车速²/21.15+旋转质量系数*整车质量*(加速末车速/加速时间/3.6))"><span data-i18n="maxAccelerationPower">Pmax3_最大加速功率(kW)：</span><span id="maxAccelerationPower"></span></div>
                         </div>
                         
                         <!-- 第二组：第二行第一列 -->
                         <div class="result-section">
-                            <div class="result-item" title="电机峰值功率(kW) = max(Pmax1, Pmax2, Pmax3)"><span>电机峰值功率(kW)：</span><span id="motorPeakPower"></span></div>
-                            <div class="result-item" title="电机额定功率(kW) = Pmax1_最高车速功率"><span>电机额定功率(kW)：</span><span id="motorRatedPower"></span></div>
-                            <div class="result-item" title="电机峰值转速(r/min) = 最高车速*主减速比*变速器高档传动比/0.3768/驱动轮胎半径"><span>电机峰值转速(r/min)：</span><span id="motorPeakRPM"></span></div>
-                            <div class="result-item" title="电机额定转速(r/min) = 最高车速*主减速比*变速器低档传动比/0.3768/驱动轮胎半径"><span>电机额定转速(r/min)：</span><span id="motorRatedRPM"></span></div>
+                            <div class="result-item" title="电机峰值功率(kW) = max(Pmax1, Pmax2, Pmax3)"><span data-i18n="motorPeakPower">电机峰值功率(kW)：</span><span id="motorPeakPower"></span></div>
+                            <div class="result-item" title="电机额定功率(kW) = Pmax1_最高车速功率"><span data-i18n="motorRatedPower">电机额定功率(kW)：</span><span id="motorRatedPower"></span></div>
+                            <div class="result-item" title="电机峰值转速(r/min) = 最高车速*主减速比*变速器高档传动比/0.3768/驱动轮胎半径"><span data-i18n="motorPeakRPM">电机峰值转速(r/min)：</span><span id="motorPeakRPM"></span></div>
+                            <div class="result-item" title="电机额定转速(r/min) = 最高车速*主减速比*变速器低档传动比/0.3768/驱动轮胎半径"><span data-i18n="motorRatedRPM">电机额定转速(r/min)：</span><span id="motorRatedRPM"></span></div>
                         </div>
                         
                         <!-- 第三组：第一行第二列 -->
                         <div class="result-section">
-                            <div class="result-item" title="燃料电池额定功率(kW) = 电机额定功率 + 整车附件功率"><span>燃料电池额定功率(kW)：</span><span id="fuelCellRequiredPower"></span></div>
-                            <div class="result-item" title="额定工况PEM氢耗(g/s) = 燃料电池所需功率*1000/额定工况PEM节电压/96485/(氢气利用率/100)"><span>额定工况PEM氢耗(g/s)：</span><span id="ratedConditionHydrogenConsumption"></span></div>
-                            <div class="result-item" title="PEM所需氢气质量(Kg) = 续驶里程/最高车速*3600*额定工况氢耗/1000"><span>PEM所需氢气质量(Kg)：</span><span id="requiredHydrogenMass"></span></div>
-                            <div class="result-item" title="单瓶存储氢气质量(Kg) = 氢气瓶压力*1000*氢气瓶容积/8.314/298*2.016/1000"><span>单瓶存储氢气质量(Kg)：</span><span id="singleBottleHydrogenMass"></span></div>
-                            <div class="result-item" title="所需氢瓶数量(n) = PEM所需氢气质量/单瓶存储氢气质量"><span>所需氢瓶数量(n)：</span><span id="requiredBottleCount"></span></div>
+                            <div class="result-item" title="燃料电池额定功率(kW) = 电机额定功率 + 整车附件功率"><span data-i18n="fuelCellRequiredPower">燃料电池额定功率(kW)：</span><span id="fuelCellRequiredPower"></span></div>
+                            <div class="result-item" title="额定工况PEM氢耗(g/s) = 燃料电池所需功率*1000/额定工况PEM节电压/96485/(氢气利用率/100)"><span data-i18n="ratedConditionHydrogenConsumption">额定工况PEM氢耗(g/s)：</span><span id="ratedConditionHydrogenConsumption"></span></div>
+                            <div class="result-item" title="PEM所需氢气质量(Kg) = 续驶里程/最高车速*3600*额定工况氢耗/1000"><span data-i18n="requiredHydrogenMass">PEM所需氢气质量(Kg)：</span><span id="requiredHydrogenMass"></span></div>
+                            <div class="result-item" title="单瓶存储氢气质量(Kg) = 氢气瓶压力*1000*氢气瓶容积/8.314/298*2.016/1000"><span data-i18n="singleBottleHydrogenMass">单瓶存储氢气质量(Kg)：</span><span id="singleBottleHydrogenMass"></span></div>
+                            <div class="result-item" title="所需氢瓶数量(n) = PEM所需氢气质量/单瓶存储氢气质量"><span data-i18n="requiredBottleCount">所需氢瓶数量(n)：</span><span id="requiredBottleCount"></span></div>
                         </div>
                         
                         <!-- 第四组：第一行第三列 -->
                         <div class="result-section">
-                            <div class="result-item" title="动力电池所需功率(kW) = (电机峰值功率/驱动电机及控制器效率-燃料电池所需功率)/动力电池效率"><span>动力电池所需功率(kW)：</span><span id="batteryRequiredPower"></span></div>
-                            <div class="result-item" title="额定百公里氢耗(kg/100km) = 额定工况PEM氢耗 * 100 / 最高车速 * 3600 / 1000"><span>额定百公里氢耗(kg/100km)：</span><span id="rated100kmHydrogenConsumption"></span></div>
-                            <div class="result-item" title="额定百公里氢气价格(元/100km) = 额定百公里氢耗 * 氢气价格"><span>额定百公里氢气价格(元/100km)：</span><span id="rated100kmHydrogenPrice"></span></div>
+                            <div class="result-item" title="动力电池所需功率(kW) = (电机峰值功率/驱动电机及控制器效率-燃料电池所需功率)/动力电池效率"><span data-i18n="batteryRequiredPower">动力电池所需功率(kW)：</span><span id="batteryRequiredPower"></span></div>
+                            <div class="result-item" title="额定百公里氢耗(kg/100km) = 额定工况PEM氢耗 * 100 / 最高车速 * 3600 / 1000"><span data-i18n="rated100kmHydrogenConsumption">额定百公里氢耗(kg/100km)：</span><span id="rated100kmHydrogenConsumption"></span></div>
+                            <div class="result-item" title="额定百公里氢气价格(元/100km) = 额定百公里氢耗 * 氢气价格"><span data-i18n="rated100kmHydrogenPrice">额定百公里氢气价格(元/100km)：</span><span id="rated100kmHydrogenPrice"></span></div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- 参考文献部分 -->
                 <div class="reference">
-                    <h4>参考文献</h4>
+                    <h4 data-i18n="references">参考文献</h4>
                     <ol class="reference-list">
-                        <li>王珂. 燃料电池混合动力系统设计[D]. [硕士学位论文]. 成都: 西南交通大学.</li>
-                        <li>赵春鹏. 燃料电池汽车混合动力系统设计研究[D]. [硕士学位论文]. 浙江: 浙江大学.</li>
-                        <li>陈浩. 燃料电池／锂电池混合动力系统优化管理[D]. [博士学位论文]. 浙江: 浙江大学.</li>
-                        <li>丁晨光. 氢燃料电池混合动力系统能量管理策略研究[D]. [硕士学位论文]. 成都: 电子科技大学.</li>
-                        <li>张鑫新. 基于深度Q学习的燃料电池混合动力汽车控制研究[D]. [硕士学位论文]. 重庆: 重庆交通大学.</li>
+                        <li data-i18n="hybridSystemReference1">王珂. 燃料电池混合动力系统设计[D]. [硕士学位论文]. 成都: 西南交通大学.</li>
+                        <li data-i18n="hybridSystemReference2">赵春鹏. 燃料电池汽车混合动力系统设计研究[D]. [硕士学位论文]. 浙江: 浙江大学.</li>
+                        <li data-i18n="hybridSystemReference3">陈浩. 燃料电池／锂电池混合动力系统优化管理[D]. [博士学位论文]. 浙江: 浙江大学.</li>
+                        <li data-i18n="hybridSystemReference4">丁晨光. 氢燃料电池混合动力系统能量管理策略研究[D]. [硕士学位论文]. 成都: 电子科技大学.</li>
+                        <li data-i18n="hybridSystemReference5">张鑫新. 基于深度Q学习的燃料电池混合动力汽车控制研究[D]. [硕士学位论文]. 重庆: 重庆交通大学.</li>
                     </ol>
                 </div>
             </div>
@@ -944,34 +960,34 @@
             <!-- 第八页：实用小工具 -->
             <div class="tab-content" id="tools">
                 <div class="section">
-                    <h2>求和工具</h2>
+                    <h2 data-i18n="tools.sumTool">求和工具</h2>
                     <div class="tool-input">
-                        <input type="text" id="sumInput" placeholder="请输入数字，用逗号或换行分隔">
-                        <button id="sumButton" class="tool-button">求和</button>
-                        <button id="clearSumButton" class="tool-button">清除</button>
+                        <input type="text" id="sumInput" data-i18n-placeholder="tools.sumInputPlaceholder" placeholder="请输入数字，用逗号或换行分隔">
+                        <button id="sumButton" class="tool-button" data-i18n="tools.sumButton">求和</button>
+                        <button id="clearSumButton" class="tool-button" data-i18n="tools.clearButton">清除</button>
                         <div class="tool-result" title="求和结果 = 所有输入数字的总和">
-                            <span>结果: </span><span id="sumResult"></span>
+                            <span data-i18n="tools.result">结果: </span><span id="sumResult"></span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="section">
-                    <h2>流速转换</h2>
+                    <h2 data-i18n="tools.velocityTool">流速转换</h2>
                     <div class="tool-input">
                         <div class="flow-velocity-inputs">
                             <div class="input-group">
-                                <label for="flowRateSLPM">流量 (SLPM):</label>
+                                <label for="flowRateSLPM" data-i18n="tools.flowRate">流量 (SLPM):</label>
                                 <input type="number" id="flowRateSLPM" step="0.1">
                             </div>
                             <div class="input-group">
-                                <label for="pipeDiameter">管道直径 (mm):</label>
+                                <label for="pipeDiameter" data-i18n="tools.pipeDiameter">管道直径 (mm):</label>
                                 <input type="number" id="pipeDiameter" step="0.1">
                             </div>
                         </div>
-                        <button id="calculateVelocityButton" class="tool-button">计算流速</button>
+                        <button id="calculateVelocityButton" class="tool-button" data-i18n="tools.calculateVelocity">计算流速</button>
                         <div class="tool-results">
-                            <div class="tool-result" title="流速(m/s) = 流量(SLPM)/(60*截面积)"><span>流速: </span><span id="velocityResult"></span></div>
-                            <div class="tool-result" title="截面积(m2) = 0.25*3.14159*管道直径^2/1000000"><span>截面积: </span><span id="areaResult"></span></div>
+                            <div class="tool-result" title="流速(m/s) = 流量(SLPM)/(60*截面积)"><span data-i18n="tools.velocity">流速: </span><span id="velocityResult"></span></div>
+                            <div class="tool-result" title="截面积(m2) = 0.25*3.14159*管道直径^2/1000000"><span data-i18n="tools.area">截面积: </span><span id="areaResult"></span></div>
                         </div>
                     </div>
                 </div>
@@ -985,15 +1001,15 @@
     <div id="stackDesignInfoDialog" class="dialog">
         <div class="dialog-content">
             <div class="dialog-header">
-                <h2>程序说明</h2>
+                <h2 data-i18n="programInstructions">程序说明</h2>
                 <button id="closeStackDesignInfoButton" class="close-button">×</button>
             </div>
             <div class="dialog-body">
-                <p>1、第一页为绝压计算，计算参数大多基于电密和节数；</p>
-                <p>2、此程序可以计算自增湿电堆，保持加湿器输入为零即可；</p>
-                <p>3、设计输入可以根据不同电堆和工况点进行保存和导入；</p>
-                <p>4、第二页空气热力计算海拔高度只会影响空压机的功耗，不会对第一页绝压计算产生影响。</p>
-                <p>5、可以同时打开多个窗口进行结果对比；</p>
+                <p data-i18n="instruction1">1、第一页为绝压计算，计算参数大多基于电密和节数；</p>
+                <p data-i18n="instruction2">2、此程序可以计算自增湿电堆，保持加湿器输入为零即可；</p>
+                <p data-i18n="instruction3">3、设计输入可以根据不同电堆和工况点进行保存和导入；</p>
+                <p data-i18n="instruction4">4、第二页空气热力计算海拔高度只会影响空压机的功耗，不会对第一页绝压计算产生影响；</p>
+                <p data-i18n="instruction5">5、可以同时打开多个窗口进行结果对比。</p>
                 
                 
             </div>
@@ -1003,7 +1019,7 @@
     <script src="script.js?v=1"></script>
 <footer>
     <div class="footer-content">
-        <p>© 2025 Fuel Cell Calculator. All rights reserved. <a href="#about" onclick="showModal('about')">关于我们</a> | <a href="#contact" onclick="showModal('contact')">联系我们</a></p>
+        <p><span data-i18n="copyright">© 2025 Fuel Cell Calculator. All rights reserved.</span> <a href="#about" onclick="showModal('about')" data-i18n="aboutUs">关于我们</a> | <a href="#contact" onclick="showModal('contact')" data-i18n="contactUs">联系我们</a></p>
     </div>
 </footer>
 
@@ -1022,42 +1038,42 @@
         
         <!-- 登录界面 -->
         <div id="loginSection">
-            <h2>登录</h2>
+            <h2 data-i18n="loginTitle">登录</h2>
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="loginEmail">邮箱:</label>
+                    <label for="loginEmail" data-i18n="emailLabel">邮箱:</label>
                     <input type="email" id="loginEmail" required>
                 </div>
                 <div class="form-group">
-                    <label for="loginPassword">密码:</label>
+                    <label for="loginPassword" data-i18n="passwordLabel">密码:</label>
                     <input type="password" id="loginPassword" required>
                 </div>
-                <button type="submit">登录</button>
+                <button type="submit" data-i18n="loginButton">登录</button>
                 <p class="switch-form">
-                    还没有账户？<a href="#" id="showRegister">立即注册</a>
+                    <span data-i18n="noAccountText">还没有账户？</span><a href="#" id="showRegister" data-i18n="registerNowLink">立即注册</a>
                 </p>
             </form>
         </div>
         
         <!-- 注册界面 -->
         <div id="registerSection" style="display: none;">
-            <h2>注册</h2>
+            <h2 data-i18n="registerTitle">注册</h2>
             <form id="registerForm">
                 <div class="form-group">
-                    <label for="registerEmail">邮箱:</label>
+                    <label for="registerEmail" data-i18n="emailLabel">邮箱:</label>
                     <input type="email" id="registerEmail" required>
                 </div>
                 <div class="form-group">
-                    <label for="registerPassword">密码:</label>
+                    <label for="registerPassword" data-i18n="passwordLabel">密码:</label>
                     <input type="password" id="registerPassword" required minlength="6">
                 </div>
                 <div class="form-group">
-                    <label for="confirmPassword">确认密码:</label>
+                    <label for="confirmPassword" data-i18n="confirmPasswordLabel">确认密码:</label>
                     <input type="password" id="confirmPassword" required minlength="6">
                 </div>
-                <button type="submit">注册</button>
+                <button type="submit" data-i18n="registerButton">注册</button>
                 <p class="switch-form">
-                    已有账户？<a href="#" id="showLogin">立即登录</a>
+                    <span data-i18n="hasAccountText">已有账户？</span><a href="#" id="showLogin" data-i18n="loginNowLink">立即登录</a>
                 </p>
             </form>
         </div>
@@ -1069,72 +1085,74 @@
         <span class="close" onclick="closeModal('footer')">&times;</span>
         <div class="modal-grid">
             <div class="modal-column">
-                <h2>关于我们</h2>
-                <p>Fuel Cell Calculator 是一个专业的燃料电池计算工具，旨在为工程师和研究人员提供准确的计算服务。感谢程同学在软件开发中提供的支持和校对工作。</p>
+                <h2 data-i18n="aboutUsTitle">关于我们</h2>
+                <p data-i18n="aboutUsContent">Fuel Cell Calculator 是一个专业的燃料电池计算工具，旨在为工程师和研究人员提供准确的计算服务。感谢程同学在软件开发中提供的支持和校对工作。</p>
             </div>
             <div class="modal-column">
-                <h2>联系我们</h2>
-                <p>如有任何问题或建议，请通过以下方式联系我们：</p>
-                <p>邮箱: 363383119@qq.com</p>
-                <p>电话: 400-123-1234</p>
+                <h2 data-i18n="contactUsTitle">联系我们</h2>
+                <p data-i18n="contactUsContent">如有任何问题或建议，请通过以下方式联系我们：</p>
+                <p data-i18n="contactEmail">邮箱: 363383119@qq.com</p>
+                <p data-i18n="contactPhone">电话: 400-123-1234</p>
             </div>
         </div>
     </div>
 </div>
 
 <!-- 版本更新日志模态框 -->
-<div id="versionLogModal" class="login-modal" style="display: none;">
-    <div class="modal-content">
+<div id="versionLogModal" class="login-modal version-log-modal" style="display: none;">
+    <div class="modal-content version-log-modal-content">
         <span class="close-button" onclick="closeVersionLog()">&times;</span>
-        <h2>版本更新日志</h2>
+        <h2 data-i18n="versionLogTitle">版本更新日志</h2>
         
         <div class="version-log-content">
             <div class="version-entry">
-                <h3>V2.21 更新内容</h3>
+                <h3 data-i18n="version221Title">V2.21 更新内容</h3>
                 <ul>
-                    <li>增加第七页额定百公里氢耗和价格</li>
-                    <li>增加了第一页强迫加湿环境湿度设置问题</li>
-                    <li>修正bug</li>
+                    <li data-i18n="version221Item1">增加第七页额定百公里氢耗和价格</li>
+                    <li data-i18n="version221Item2">增加了第一页强迫加湿环境湿度设置问题</li>
+                    <li data-i18n="version221Item3">修正bug</li>
+                    <li data-i18n="version221Item4">增加了3种语言可切换方便更多人使用</li>
+                    <li data-i18n="version221Item5">开源源代码到Github仓库</li>
                 </ul>
             </div>
             
             <div class="version-entry">
-                <h3>V2.20 更新内容</h3>
+                <h3 data-i18n="version220Title">V2.20 更新内容</h3>
                 <ul>
-                    <li>增加动态性能（beta）模块</li>
-                    <li>增加参考文献内容</li>
-                    <li>并且持续升级之中</li>
+                    <li data-i18n="version220Item1">增加动态性能（beta）模块</li>
+                    <li data-i18n="version220Item2">增加参考文献内容</li>
+                    <li data-i18n="version220Item3">并且持续升级之中</li>
                 </ul>
             </div>
             
             <div class="version-entry">
-                <h3>V2.12 更新内容</h3>
+                <h3 data-i18n="version212Title">V2.12 更新内容</h3>
                 <ul>
-                    <li>修复了混合动力系统计算中的错误</li>
-                    <li>优化了散热器和中冷器计算的准确性</li>
-                    <li>更新了错流对数温差修正系数的计算公式</li>
-                    <li>添加了结果项的公式悬停功能，方便用户理解计算原理★★★</li>
-                    <li>提升了页面响应速度和用户体验</li>
+                    <li data-i18n="version212Item1">修复了混合动力系统计算中的错误</li>
+                    <li data-i18n="version212Item2">优化了散热器和中冷器计算的准确性</li>
+                    <li data-i18n="version212Item3">更新了错流对数温差修正系数的计算公式</li>
+                    <li data-i18n="version212Item4">添加了结果项的公式悬停功能，方便用户理解计算原理★★★</li>
+                    <li data-i18n="version212Item5">提升了页面响应速度和用户体验</li>
                 </ul>
             </div>
             
             <div class="version-entry">
-                <h3>V2.11 更新内容</h3>
+                <h3 data-i18n="version211Title">V2.11 更新内容</h3>
                 <ul>
-                    <li>增加了混合动力系统计算页面</li>
-                    <li>优化了实用小工具功能</li>
-                    <li>修复了管路压损计算中的bug</li>
-                    <li>提升了系统整体稳定性</li>
+                    <li data-i18n="version211Item1">增加了混合动力系统计算页面</li>
+                    <li data-i18n="version211Item2">优化了实用小工具功能</li>
+                    <li data-i18n="version211Item3">修复了管路压损计算中的bug</li>
+                    <li data-i18n="version211Item4">提升了系统整体稳定性</li>
                 </ul>
             </div>
             
             <div class="version-entry">
-                <h3>V2.10 更新内容</h3>
+                <h3 data-i18n="version210Title">V2.10 更新内容</h3>
                 <ul>
-                    <li>全新改版界面设计，提升用户体验</li>
-                    <li>增加了多个计算模块</li>
-                    <li>优化了数据导入导出功能</li>
-                    <li>修复了已知问题</li>
+                    <li data-i18n="version210Item1">全新改版界面设计，提升用户体验</li>
+                    <li data-i18n="version210Item2">增加了多个计算模块</li>
+                    <li data-i18n="version210Item3">优化了数据导入导出功能</li>
+                    <li data-i18n="version210Item4">修复了已知问题</li>
                 </ul>
             </div>
         </div>
